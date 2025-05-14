@@ -7,11 +7,73 @@ import TransactionAnalysis from '@/components/TransactionAnalysis';
 import FinancialAdvice from '@/components/FinancialAdvice';
 import FinancialQuiz from '@/components/FinancialQuiz';
 import ChatWithStatement from '@/components/ChatWithStatement';
+import BankStatementAnalysis from '@/components/BankStatementAnalysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockStatementAnalysis } from '@/utils/mockData';
 
+// Sample bank statement data
+const sampleBankStatementData = {
+  basicAccountInfo: {
+    name: "IBRAHIM AYODEJI IBRAHIM",
+    accountNumber: "2007132656",
+    dateRange: "01/01/2025 - 14/05/2025",
+    openingBalance: "₦2.14",
+    closingBalance: "₦20.14"
+  },
+  overallAccountFlow: {
+    moneyIn: "₦2,279,594.00",
+    moneyOut: "₦2,279,576.00"
+  },
+  // All the rest of the data from the provided JSON structure
+  transactionAnalysis: {
+    // ... This would be populated with the full data structure
+    incomeCredit: {
+      regularTransferFrom: [],
+      internalOrCreditReversals: []
+    },
+    expendituresDebit: {
+      transferToIndividuals: [],
+      paymentsToBusinessesAndServices: [],
+      billsAndUtilities: [],
+      foodAndGroceries: { totalAmount: "₦0", count: 0, details: [] },
+      transportation: { totalAmount: "₦0", count: 0, details: [] },
+      laundry: { totalAmount: "₦0", count: 0, details: [] },
+      upkeep: { totalAmount: "₦0", count: 0, details: [] },
+      posExpenses: { totalAmount: "₦0", count: 0, details: [] },
+      webPayments: { totalAmount: "₦0", count: 0, details: [] },
+      cashWithdrawals: { totalAmount: "₦0", count: 0, details: [] },
+      miscellaneous: { totalAmount: "₦0", count: 0, details: [] },
+      bankCharges: [],
+      otherPayments: []
+    }
+  },
+  dailySpendingData: [],
+  financialAdvice: [
+    "Your spending is quite high and varied, covering numerous categories and recipients.",
+    "A significant portion of your outflow is categorized as 'Expenses Withdrawal' or 'Muzammil Withdrawal'."
+  ],
+  dashboardMetrics: {
+    totalIncome: "₦2,279,594.00",
+    totalExpenses: "₦2,279,576.00",
+    netFlow: "₦18.00",
+    topIncomeSources: [
+      {source: "Muzammil Ismail / Polaris Bank", amount: "₦380,000.00"},
+      {source: "Ibrahim Ayodeji Ibrahim / Jaiz Bank", amount: "₦450,200.00"}
+    ],
+    topSpendingCategories: [
+      {category: "Cash Withdrawals", amount: "₦197,240.00"},
+      {category: "Payments to Businesses and Services", amount: "₦120,914.00"}
+    ],
+    topSpendingRecipients: [
+      {recipient: "Ibrahim Ayodeji (Self/Linked)", amount: "₦16,320.00"},
+      {recipient: "Muhammadbello Tosho Ibrahim", amount: "₦31,000.00"}
+    ]
+  }
+};
+
 const Index = () => {
   const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
+  const [showNewUI, setShowNewUI] = useState(true); // Toggle between new and old UI
 
   return (
     <Layout>
@@ -27,38 +89,52 @@ const Index = () => {
         </div>
       ) : (
         <div className="space-y-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Your Financial Analysis</h1>
-            <p className="text-muted-foreground">
-              Here's what we found in your bank statement. Explore the different sections below.
-            </p>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Your Financial Analysis</h1>
+              <p className="text-muted-foreground">
+                Here's what we found in your bank statement. Explore the different sections below.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowNewUI(!showNewUI)}
+              className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
+            >
+              Switch to {showNewUI ? 'Classic' : 'Enhanced'} View
+            </button>
           </div>
           
-          <Dashboard 
-            accountSummary={mockStatementAnalysis.accountSummary} 
-            categoryBreakdown={mockStatementAnalysis.categoryBreakdown} 
-          />
-          
-          <Tabs defaultValue="transactions" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="transactions">Transactions</TabsTrigger>
-              <TabsTrigger value="chat">Ask Questions</TabsTrigger>
-              <TabsTrigger value="advice">Financial Advice</TabsTrigger>
-              <TabsTrigger value="quiz">Financial Quiz</TabsTrigger>
-            </TabsList>
-            <TabsContent value="transactions" className="mt-6">
-              <TransactionAnalysis transactions={mockStatementAnalysis.transactions} />
-            </TabsContent>
-            <TabsContent value="chat" className="mt-6">
-              <ChatWithStatement statementData={mockStatementAnalysis} />
-            </TabsContent>
-            <TabsContent value="advice" className="mt-6">
-              <FinancialAdvice insights={mockStatementAnalysis.insights} />
-            </TabsContent>
-            <TabsContent value="quiz" className="mt-6">
-              <FinancialQuiz questions={mockStatementAnalysis.quizQuestions} />
-            </TabsContent>
-          </Tabs>
+          {showNewUI ? (
+            <BankStatementAnalysis data={sampleBankStatementData} />
+          ) : (
+            <>
+              <Dashboard 
+                accountSummary={mockStatementAnalysis.accountSummary} 
+                categoryBreakdown={mockStatementAnalysis.categoryBreakdown} 
+              />
+              
+              <Tabs defaultValue="transactions" className="w-full">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                  <TabsTrigger value="chat">Ask Questions</TabsTrigger>
+                  <TabsTrigger value="advice">Financial Advice</TabsTrigger>
+                  <TabsTrigger value="quiz">Financial Quiz</TabsTrigger>
+                </TabsList>
+                <TabsContent value="transactions" className="mt-6">
+                  <TransactionAnalysis transactions={mockStatementAnalysis.transactions} />
+                </TabsContent>
+                <TabsContent value="chat" className="mt-6">
+                  <ChatWithStatement statementData={mockStatementAnalysis} />
+                </TabsContent>
+                <TabsContent value="advice" className="mt-6">
+                  <FinancialAdvice insights={mockStatementAnalysis.insights} />
+                </TabsContent>
+                <TabsContent value="quiz" className="mt-6">
+                  <FinancialQuiz questions={mockStatementAnalysis.quizQuestions} />
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
         </div>
       )}
     </Layout>

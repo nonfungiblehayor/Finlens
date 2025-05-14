@@ -1,4 +1,3 @@
-
 export interface Transaction {
   id: string;
   date: string;
@@ -45,4 +44,189 @@ export interface BankStatementAnalysis {
   categoryBreakdown: CategoryBreakdown[];
   insights: FinancialInsight[];
   quizQuestions: QuizQuestion[];
+}
+
+// Bank Statement types
+export interface BankStatement {
+  basicAccountInfo: {
+    name: string;
+    accountNumber: string;
+    dateRange: string;
+    openingBalance: string;
+    closingBalance: string;
+  };
+  overallAccountFlow: {
+    moneyIn: string;
+    moneyOut: string;
+  };
+  transactionAnalysis: {
+    incomeCredit: {
+      regularTransferFrom: Array<{
+        source: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+      internalOrCreditReversals: Array<{
+        source: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+    };
+    expendituresDebit: {
+      transferToIndividuals: Array<{
+        recipient: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+      paymentsToBusinessesAndServices: Array<{
+        recipientOrService: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+      billsAndUtilities: Array<{
+        type: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+      foodAndGroceries: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      transportation: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      laundry: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      upkeep: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      posExpenses: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      webPayments: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      cashWithdrawals: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      miscellaneous: {
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      };
+      bankCharges: Array<{
+        type: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+      otherPayments: Array<{
+        type: string;
+        totalAmount: string;
+        count: number;
+        details: Array<{
+          date: string;
+          amount: string;
+          description: string;
+        }>;
+      }>;
+    };
+  };
+  dailySpendingData: Array<{
+    date: string;
+    amount: number;
+  }>;
+  financialAdvice: string[];
+  dashboardMetrics: {
+    totalIncome: string;
+    totalExpenses: string;
+    netFlow: string;
+    topIncomeSources: Array<{
+      source: string;
+      amount: string;
+    }>;
+    topSpendingCategories: Array<{
+      category: string;
+      amount: string;
+    }>;
+    topSpendingRecipients: Array<{
+      recipient: string;
+      amount: string;
+    }>;
+  };
 }
