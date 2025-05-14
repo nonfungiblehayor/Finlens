@@ -5,18 +5,12 @@ import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AccountSummary, CategoryBreakdown } from '@/types';
 import { 
-  Chart,
   ChartContainer,
-  ChartGrid,
-  ChartLine,
-  ChartAxisX,
-  ChartAxisY,
-  ChartArea,
-  ChartLegend,
   ChartTooltip,
   ChartTooltipContent,
-  ChartTooltipTrigger
+  ChartLegend
 } from '@/components/ui/chart';
+import * as RechartsPrimitive from "recharts";
 import { 
   DollarSign, 
   CreditCard, 
@@ -65,6 +59,13 @@ const Dashboard = ({ accountSummary, categoryBreakdown }: DashboardProps) => {
     { name: "Savings", value: accountSummary.savings, color: "#60a5fa" },
   ];
 
+  // Chart configuration for the recharts integration
+  const chartConfig = {
+    Income: { color: "#4ade80", label: "Income" },
+    Expenses: { color: "#f87171", label: "Expenses" },
+    Savings: { color: "#60a5fa", label: "Savings" }
+  };
+
   // Sort categories by percentage for expense breakdown
   const sortedCategories = [...categoryBreakdown].sort((a, b) => b.percentage - a.percentage);
 
@@ -109,20 +110,39 @@ const Dashboard = ({ accountSummary, categoryBreakdown }: DashboardProps) => {
         </CardHeader>
         <CardContent>
           <div className="h-[300px]">
-            <Chart className="h-full w-full">
-              <ChartContainer>
-                <ChartGrid />
-                <ChartAxisX />
-                <ChartAxisY />
-                <ChartArea data={chartData} />
-                <ChartLine data={chartData} />
-                <ChartLegend />
-                <ChartTooltip>
-                  <ChartTooltipTrigger />
-                  <ChartTooltipContent />
-                </ChartTooltip>
-              </ChartContainer>
-            </Chart>
+            <ChartContainer config={chartConfig}>
+              <RechartsPrimitive.ResponsiveContainer>
+                <RechartsPrimitive.BarChart data={chartData}>
+                  <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
+                  <RechartsPrimitive.XAxis dataKey="name" />
+                  <RechartsPrimitive.YAxis />
+                  <RechartsPrimitive.Tooltip 
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        return (
+                          <div className="rounded-lg border bg-background p-2 shadow-sm">
+                            <div className="flex items-center">
+                              <div
+                                className="h-2 w-2 rounded-full"
+                                style={{ backgroundColor: payload[0].payload.color }}
+                              />
+                              <span className="ml-2 font-medium">{payload[0].name}</span>
+                            </div>
+                            <div className="mt-1 text-sm">{formatCurrency(payload[0].value as number)}</div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <RechartsPrimitive.Bar dataKey="value" fill="#60a5fa">
+                    {chartData.map((entry, index) => (
+                      <RechartsPrimitive.Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </RechartsPrimitive.Bar>
+                </RechartsPrimitive.BarChart>
+              </RechartsPrimitive.ResponsiveContainer>
+            </ChartContainer>
           </div>
           <div className="mt-6">
             <div className="flex justify-between mb-1">
