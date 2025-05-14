@@ -6,6 +6,7 @@ import Dashboard from '@/components/Dashboard';
 import TransactionAnalysis from '@/components/TransactionAnalysis';
 import FinancialAdvice from '@/components/FinancialAdvice';
 import FinancialQuiz from '@/components/FinancialQuiz';
+import ChatWithStatement from '@/components/ChatWithStatement';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockStatementAnalysis } from '@/utils/mockData';
 
@@ -39,13 +40,17 @@ const Index = () => {
           />
           
           <Tabs defaultValue="transactions" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="transactions">Transactions</TabsTrigger>
+              <TabsTrigger value="chat">Ask Questions</TabsTrigger>
               <TabsTrigger value="advice">Financial Advice</TabsTrigger>
               <TabsTrigger value="quiz">Financial Quiz</TabsTrigger>
             </TabsList>
             <TabsContent value="transactions" className="mt-6">
               <TransactionAnalysis transactions={mockStatementAnalysis.transactions} />
+            </TabsContent>
+            <TabsContent value="chat" className="mt-6">
+              <ChatWithStatement statementData={mockStatementAnalysis} />
             </TabsContent>
             <TabsContent value="advice" className="mt-6">
               <FinancialAdvice insights={mockStatementAnalysis.insights} />
