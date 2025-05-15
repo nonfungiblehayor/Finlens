@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Layout from '@/components/Layout';
 import FileUpload from '@/components/FileUpload';
@@ -80,7 +79,7 @@ const Index = () => {
       {!isAnalysisComplete ? (
         <div className="flex flex-col items-center justify-center min-h-[80vh]">
           <div className="max-w-lg w-full px-4">
-            <h1 className="text-3xl font-bold text-center mb-2">Welcome to Wallet Wisdom</h1>
+            <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
               Your AI-powered financial assistant to help you make smarter money decisions
             </p>
