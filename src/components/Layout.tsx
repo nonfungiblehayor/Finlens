@@ -32,7 +32,7 @@ const Layout = ({ children, className }: LayoutProps) => {
           </p>
           <div className="flex items-center space-x-1">
             <p className="text-sm text-muted-foreground">
-              Built with AI for better financial decisions
+              Built by @eibrahim_ayo for better financial decisions
             </p>
           </div>
         </div>

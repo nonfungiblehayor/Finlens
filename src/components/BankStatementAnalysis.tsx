@@ -8,10 +8,10 @@ import IncomeBreakdown from '@/components/IncomeBreakdown';
 import ExpenditureBreakdown from '@/components/ExpenditureBreakdown';
 import SpendingTrends from '@/components/SpendingTrends';
 import FinancialInsights from '@/components/FinancialInsights';
-import { BankStatement } from '@/types';
+import { BankStatement, dataSummary } from '@/types';
 
 interface BankStatementAnalysisProps {
-  data: BankStatement;
+  data: dataSummary;
 }
 
 const BankStatementAnalysis = ({ data }: BankStatementAnalysisProps) => {
@@ -20,13 +20,13 @@ const BankStatementAnalysis = ({ data }: BankStatementAnalysisProps) => {
       <div>
         <h1 className="text-3xl font-bold mb-2">Your Bank Statement Analysis</h1>
         <p className="text-muted-foreground">
-          Here's a comprehensive analysis of your financial activity from {data.basicAccountInfo.dateRange}.
+          Here's a comprehensive analysis of your financial activity from {data?.statement_details?.statement_period_from} to  {data?.statement_details?.statement_period_to}.
         </p>
       </div>
 
       <AccountSummary 
-        basicInfo={data.basicAccountInfo} 
-        overallFlow={data.overallAccountFlow} 
+        basicInfo={data?.statement_details} 
+        overallFlow={data?.summary} 
       />
 
       <Tabs defaultValue="transaction-flow" className="w-full">
@@ -38,7 +38,7 @@ const BankStatementAnalysis = ({ data }: BankStatementAnalysisProps) => {
           <TabsTrigger value="insights">Insights & Advice</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="transaction-flow">
+        {/* <TabsContent value="transaction-flow">
           <TransactionFlow 
             income={data.overallAccountFlow.moneyIn} 
             expenses={data.overallAccountFlow.moneyOut}
@@ -82,7 +82,7 @@ const BankStatementAnalysis = ({ data }: BankStatementAnalysisProps) => {
         
         <TabsContent value="insights">
           <FinancialInsights advice={data.financialAdvice} />
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );

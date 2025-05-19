@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Layout from '@/components/Layout';
 import FileUpload from '@/components/FileUpload';
-import Dashboard from '@/components/Dashboard';
 import TransactionAnalysis from '@/components/TransactionAnalysis';
-import FinancialAdvice from '@/components/FinancialAdvice';
-import FinancialQuiz from '@/components/FinancialQuiz';
 import ChatWithStatement from '@/components/ChatWithStatement';
 import BankStatementAnalysis from '@/components/BankStatementAnalysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { mockStatementAnalysis } from '@/utils/mockData';
+import { Analysis } from '@/types';
+import DataVisualization from '@/components/DataVisualization';
 
 // Sample bank statement data
 const sampleBankStatementData = {
@@ -71,19 +70,19 @@ const sampleBankStatementData = {
 };
 
 const Index = () => {
-  const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
-  const [showNewUI, setShowNewUI] = useState(true); // Toggle between new and old UI
-
+  const [showNewUI, setShowNewUI] = useState(false); // Toggle between new and old UI
+  const [analysis, setAnalysis] = useState<Analysis>()
+  const [streamedText, setStreamedText] = useState('')
   return (
     <Layout>
-      {!isAnalysisComplete ? (
+      {!streamedText ? (
         <div className="flex flex-col items-center justify-center min-h-[80vh]">
           <div className="max-w-lg w-full px-4">
             <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
               Your AI-powered financial assistant to help you make smarter money decisions
             </p>
-            <FileUpload onAnalysisComplete={() => setIsAnalysisComplete(true)} />
+            <FileUpload onAnalysisComplete={setAnalysis} setStreamedText={setStreamedText} streamedText={streamedText}/>
           </div>
         </div>
       ) : (
@@ -104,32 +103,27 @@ const Index = () => {
           </div>
           
           {showNewUI ? (
-            <BankStatementAnalysis data={sampleBankStatementData} />
+           " <BankStatementAnalysis data={sampleBankStatementData} />"
           ) : (
             <>
-              <Dashboard 
+              {/* <Dashboard 
                 accountSummary={mockStatementAnalysis.accountSummary} 
                 categoryBreakdown={mockStatementAnalysis.categoryBreakdown} 
-              />
-              
+              /> */}
               <Tabs defaultValue="transactions" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="transactions">Transactions</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 justify-items-center">
+                  <TabsTrigger value="transactions">Account overview</TabsTrigger>
+                  <TabsTrigger value="visuals">Data Visualization</TabsTrigger>
                   <TabsTrigger value="chat">Ask Questions</TabsTrigger>
-                  <TabsTrigger value="advice">Financial Advice</TabsTrigger>
-                  <TabsTrigger value="quiz">Financial Quiz</TabsTrigger>
                 </TabsList>
                 <TabsContent value="transactions" className="mt-6">
-                  <TransactionAnalysis transactions={mockStatementAnalysis.transactions} />
+                  <TransactionAnalysis analysisReport={streamedText} />
                 </TabsContent>
                 <TabsContent value="chat" className="mt-6">
                   <ChatWithStatement statementData={mockStatementAnalysis} />
                 </TabsContent>
-                <TabsContent value="advice" className="mt-6">
-                  <FinancialAdvice insights={mockStatementAnalysis.insights} />
-                </TabsContent>
-                <TabsContent value="quiz" className="mt-6">
-                  <FinancialQuiz questions={mockStatementAnalysis.quizQuestions} />
+                <TabsContent value="visuals" className="mt-6">
+                  <DataVisualization fileId={analysis?.fileId} />
                 </TabsContent>
               </Tabs>
             </>

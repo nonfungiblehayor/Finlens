@@ -1,16 +1,20 @@
 
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Upload, FileX } from 'lucide-react';
+import { useAnalyzeDoc } from '@/utils/ai-model';
+import { Analysis } from '@/types';
 
 interface FileUploadProps {
-  onAnalysisComplete: () => void;
+  onAnalysisComplete: React.Dispatch<SetStateAction<Analysis>>
+  setStreamedText: React.Dispatch<SetStateAction<string>>
+  streamedText: string
 }
 
-const FileUpload = ({ onAnalysisComplete }: FileUploadProps) => {
+const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileUploadProps) => {
   const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -37,33 +41,36 @@ const FileUpload = ({ onAnalysisComplete }: FileUploadProps) => {
 
   const handleUpload = async () => {
     if (!file) return;
-    
+    setStreamedText('');
     setIsUploading(true);
-    
-    // Simulate file upload
-    await new Promise(resolve => setTimeout(resolve, 1500));
     setIsUploading(false);
-    
     toast({
       title: "File uploaded successfully",
       description: "Beginning analysis of your statement...",
     });
-    
     setIsAnalyzing(true);
-    
-    // Simulate analysis process
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    setIsAnalyzing(false);
-    onAnalysisComplete();
-    
-    toast({
-      title: "Analysis complete",
-      description: "Your financial insights are ready!",
-      variant: "default",
-    });
+    try {
+      await useAnalyzeDoc(
+        file,
+        (chunk) => {
+          if (chunk.fileId) {
+            onAnalysisComplete((prev) => ({...prev, fileId: chunk.fileId}))
+          }
+          if (chunk.text) {
+            setStreamedText((o) => o + chunk.text);
+            onAnalysisComplete((prev) => ({...prev, report: streamedText}))
+          }
+        },
+        (full) => {
+          setIsAnalyzing(false);
+          onAnalysisComplete((prev) => ({...prev, analysisState: true}))
+        }
+      );
+    } catch (err) {
+      console.error(err);
+      setIsAnalyzing(false);
+    }
   };
-
   return (
     <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
       <CardHeader>
@@ -136,3 +143,14 @@ const FileUpload = ({ onAnalysisComplete }: FileUploadProps) => {
 };
 
 export default FileUpload;
+   // try {
+    // //   setIsAnalyzing(false);
+    // // onAnalysisComplete();
+    // // toast({
+    // //   title: "Analysis complete",
+    // //   description: "Your financial insights are ready!",
+    // //   variant: "default",
+    // // });
+    // } catch (error) {
+    //   console.error(error)
+    // }

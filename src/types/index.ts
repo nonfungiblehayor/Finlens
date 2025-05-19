@@ -1,3 +1,75 @@
+export interface Analysis {
+  fileId: string,
+  report: string,
+  analysisState: boolean
+}
+
+export interface dataSummary {
+  statement_details: {
+    bank_name: string,
+    account_holder_name: string,
+    account_number: string,
+    statement_period_from: string,
+    statement_period_to: string,
+    opening_balance: number,
+    closing_balance: number,
+    currency: string
+  },
+  summary: {
+    total_money_in: number,
+    total_money_out: number
+  },
+  transactions: {
+    allTransactions: [
+      {
+        amount: number, 
+        date: string,
+        description: string,
+        sender_or_receiver: string,
+        debit_or_credit: string,
+        refrence: string,
+        bank: string
+      }
+    ],
+    financeBreakdown: {
+      income: number,
+      expenses: number,
+      savings: number
+    },
+    listofpeople: [
+      {
+        name: string,
+        number_of_times: number,
+        total_amount: number
+      }
+    ],
+    spendingBreakdown: [
+      {
+        category: string,
+        total_amount: number
+      }
+    ],
+    monthlySpends: [
+      {
+        month: string,
+        total_amount: number
+      }
+    ],
+    "top-5-InflowSource": [
+      {
+        name: string,
+        total_amount: number
+      }
+    ],
+    "top-5-OutflowSource": [
+      {
+        name: string,
+        total_amount: number
+      }
+    ]
+  }
+}
+
 export interface Transaction {
   id: string;
   date: string;
