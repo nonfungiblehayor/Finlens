@@ -80,7 +80,7 @@ const Index = () => {
           <div className="max-w-lg w-full px-4">
             <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
-              Your AI-powered financial assistant to help you make smarter money decisions
+              Your AI-powered financial data analyst to help you make smarter money decisions
             </p>
             <FileUpload onAnalysisComplete={setAnalysis} setStreamedText={setStreamedText} streamedText={streamedText}/>
           </div>
@@ -113,14 +113,14 @@ const Index = () => {
               <Tabs defaultValue="transactions" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 justify-items-center">
                   <TabsTrigger value="transactions">Account overview</TabsTrigger>
-                  <TabsTrigger value="visuals">Data Visualization</TabsTrigger>
+                  {/* <TabsTrigger value="visuals">Data Visualization</TabsTrigger> */}
                   <TabsTrigger value="chat">Ask Questions</TabsTrigger>
                 </TabsList>
                 <TabsContent value="transactions" className="mt-6">
                   <TransactionAnalysis analysisReport={streamedText} />
                 </TabsContent>
                 <TabsContent value="chat" className="mt-6">
-                  <ChatWithStatement statementData={mockStatementAnalysis} />
+                  <ChatWithStatement fileId={analysis?.fileId} />
                 </TabsContent>
                 <TabsContent value="visuals" className="mt-6">
                   <DataVisualization fileId={analysis?.fileId} />

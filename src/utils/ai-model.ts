@@ -67,4 +67,27 @@ export const useVisualizeData = async(file_id: string) => {
     throw new Error(error)
   }
 }
+export const useAskData = async(file_id: string, question: string) => {
+  try {
+    const response = await fetch("http://localhost:3000/ask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fileId: file_id, question: question })
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }   
+    if(response) {
+      const raw = await response.text()
+      const data = JSON.parse(raw)
+      console.log("question result", data)
+      return data?.answer?.parts[0]?.text
+    }
+  } catch (error) {
+    console.error(error)
+    throw new Error(error)
+  }
+}
 

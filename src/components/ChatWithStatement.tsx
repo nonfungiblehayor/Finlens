@@ -4,27 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { SendIcon, Bot, User } from 'lucide-react';
-import { BankStatementAnalysis } from '@/types';
-
-interface Message {
-  content: string;
-  isUser: boolean;
-  timestamp: Date;
-}
-
+import { SendIcon, Bot, User, Loader2, Copy } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
+import { useAskData } from '@/utils/ai-model';
+import { ChatSkeleton } from './ui/chatskeleton';
+import { Message } from '@/types';
+import { useMessage } from '@/context/message';
 interface ChatWithStatementProps {
-  statementData: BankStatementAnalysis;
+  fileId: string
 }
 
-const ChatWithStatement = ({ statementData }: ChatWithStatementProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      content: "Hello! I'm your financial assistant. I've analyzed your bank statement and I'm ready to answer your questions about your finances. What would you like to know?",
-      isUser: false,
-      timestamp: new Date()
-    }
-  ]);
+const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
+  const { message, setMessage } = useMessage()
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -33,96 +26,70 @@ const ChatWithStatement = ({ statementData }: ChatWithStatementProps) => {
   // Sample questions the user might want to ask
   const sampleQuestions = [
     "What was my highest expense last month?",
-    "How much did I spend on dining out?",
+    "How much income did i recieve during the statement period?",
     "What's my average daily spending?",
-    "Where can I reduce my expenses?",
-    "How much did I save this month?"
+    "What's my average monthly spending?",
+    "Who are the top 5 people have sent money to?"
   ];
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [message]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Handle message submission
   const handleSendMessage = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    
     if (!input.trim()) return;
-    
-    // Add user message
     const userMessage: Message = {
       content: input,
       isUser: true,
       timestamp: new Date()
     };
-    
-    setMessages(prev => [...prev, userMessage]);
+    setMessage(userMessage);
     setInput('');
     setIsLoading(true);
-    
-    // Simulate AI processing
-    setTimeout(() => {
-      generateResponse(input);
+    generateResponse(input).finally(() => {
       setIsLoading(false);
-    }, 1500);
+    })
   };
 
-  // Function to handle clicking a sample question
   const handleSampleQuestion = (question: string) => {
     setInput(question);
     handleSendMessage();
   };
+  const [isCopy, setCopy] = useState<{id: number, state: boolean}>()
+  function callAfterCopy(fn) {
+    setTimeout(fn, 800)
+  }
+  callAfterCopy(() => {
+    setCopy(undefined)
+  }, )
+  const copyMessage = (content: string, id: number) => {
+    navigator.clipboard.writeText(content).then(() => {
+      setCopy({id: id, state: true})
+    })
+  }
 
-  // Generate AI response based on user input
-  const generateResponse = (userInput: string) => {
-    // Simple keyword-based responses for demonstration
+  const generateResponse = async(userInput: string) => {
     const input = userInput.toLowerCase();
-    let responseContent = '';
-
-    // Very basic simulation of AI responses based on keywords
-    if (input.includes('highest expense') || input.includes('biggest expense')) {
-      const highestCategory = [...statementData.categoryBreakdown].sort((a, b) => b.amount - a.amount)[0];
-      responseContent = `Your highest expense category was ${highestCategory.category} at $${highestCategory.amount.toFixed(2)}, which represents ${highestCategory.percentage.toFixed(1)}% of your total expenses.`;
-    } else if (input.includes('dining') || input.includes('restaurants') || input.includes('food')) {
-      const foodCategory = statementData.categoryBreakdown.find(c => c.category.toLowerCase().includes('food') || c.category.toLowerCase().includes('dining'));
-      if (foodCategory) {
-        responseContent = `You spent $${foodCategory.amount.toFixed(2)} on ${foodCategory.category}, which is ${foodCategory.percentage.toFixed(1)}% of your total expenses.`;
-      } else {
-        responseContent = `I couldn't find a specific food or dining category in your statement. Would you like me to look for specific restaurant transactions instead?`;
-      }
-    } else if (input.includes('average') && (input.includes('daily') || input.includes('per day'))) {
-      const dailyAvg = statementData.accountSummary.expenses / 30; // Assuming 30 days
-      responseContent = `Your average daily spending is approximately $${dailyAvg.toFixed(2)} based on this statement period.`;
-    } else if (input.includes('reduce') || input.includes('cut') || input.includes('save money')) {
-      const topCategories = [...statementData.categoryBreakdown].sort((a, b) => b.amount - a.amount).slice(0, 2);
-      responseContent = `To reduce expenses, consider looking at your top spending categories: ${topCategories[0].category} ($${topCategories[0].amount.toFixed(2)}) and ${topCategories[1].category} ($${topCategories[1].amount.toFixed(2)}). Even a 10% reduction in these areas could save you $${((topCategories[0].amount + topCategories[1].amount) * 0.1).toFixed(2)} per month.`;
-    } else if (input.includes('save') || input.includes('savings')) {
-      const savingsRate = (statementData.accountSummary.savings / statementData.accountSummary.income) * 100;
-      responseContent = `You saved $${statementData.accountSummary.savings.toFixed(2)} this period, which is ${savingsRate.toFixed(1)}% of your income. ${savingsRate >= 20 ? 'Great job maintaining a healthy savings rate!' : 'Financial experts typically recommend saving at least 20% of your income.'}`;
-    } else {
-      // Default response
-      responseContent = `I'm not entirely sure about "${userInput}". Could you rephrase or try asking about your spending patterns, savings rate, or specific expense categories?`;
+    try {
+      const answer = await useAskData(fileId, input)
+      const aiMessage: Message = {
+        content: answer,
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessage(aiMessage); 
+    } catch (error) {
+      toast({
+        title: "An Error occured",
+        description: error,
+      });
     }
-
-    // Add AI response to messages
-    const aiMessage: Message = {
-      content: responseContent,
-      isUser: false,
-      timestamp: new Date()
-    };
-    
-    setMessages(prev => [...prev, aiMessage]);
   };
-
-  // Format timestamp
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-
   return (
     <Card className="w-full h-[600px] flex flex-col">
       <CardHeader>
@@ -134,7 +101,7 @@ const ChatWithStatement = ({ statementData }: ChatWithStatementProps) => {
       <CardContent className="flex-1 flex flex-col overflow-hidden">
         {/* Message history */}
         <div className="flex-1 overflow-y-auto mb-4 pr-2">
-          {messages.map((message, index) => (
+          {message.map((message, index) => (
             <div 
               key={index} 
               className={`mb-4 flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
@@ -144,33 +111,51 @@ const ChatWithStatement = ({ statementData }: ChatWithStatementProps) => {
                   {message.isUser ? <User size={16} /> : <Bot size={16} />}
                 </div>
                 <div>
-                  <div className={`rounded-lg px-3 py-2 ${message.isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                    <p className="text-sm">{message.content}</p>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {formatTime(message.timestamp)}
-                  </p>
+                <div className={`rounded-lg px-3 py-2 ${message.isUser ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
+                      <ReactMarkdown
+                        children={message.content}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeSanitize]}
+                      />
+                </div>
+                {!message.isUser && 
+                  <Button onClick={() => copyMessage(message?.content, index)} className='bg-transparent hover:bg-transparent text-black'>
+                    {isCopy?.id === index && isCopy ? "Copied" :  <Copy size={14} />}
+                  </Button>
+                }
                 </div>
               </div>
             </div>
           ))}
+          {isLoading && 
+            <div className='flex items-center gap-x-2'> 
+            <div className={`rounded-full p-1.5 bg-muted`}>
+              <Bot size={16} />
+            </div>
+              <ChatSkeleton /> 
+            </div> 
+          }
           <div ref={messagesEndRef} />
         </div>
 
         {/* Sample questions */}
-        <div className="mb-4 flex flex-wrap gap-2">
-          {sampleQuestions.map((question, index) => (
-            <Button 
-              key={index} 
-              variant="outline" 
-              size="sm" 
-              onClick={() => handleSampleQuestion(question)}
-              className="text-xs"
-            >
-              {question}
-            </Button>
-          ))}
-        </div>
+        {
+          message?.length < 2 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+            {sampleQuestions.map((question, index) => (
+              <Button 
+                key={index} 
+                variant="outline" 
+                size="sm" 
+                onClick={() => handleSampleQuestion(question)}
+                className="text-xs"
+              >
+                {question}
+              </Button>
+            ))}
+          </div>
+          )
+        }
 
         {/* Input area */}
         <form onSubmit={handleSendMessage} className="flex gap-2">
@@ -182,7 +167,7 @@ const ChatWithStatement = ({ statementData }: ChatWithStatementProps) => {
             className="flex-1"
           />
           <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-            <SendIcon size={18} />
+            {isLoading ? <Loader2 size={20} className="animate-spin" /> :  <SendIcon size={18} />}
           </Button>
         </form>
       </CardContent>

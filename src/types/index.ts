@@ -1,9 +1,20 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface Analysis {
   fileId: string,
   report: string,
   analysisState: boolean
 }
 
+export interface Message {
+  content: string;
+  isUser: boolean;
+  timestamp: Date;
+}
+export interface messageType {
+  message: Message[],
+  setMessage: Dispatch<SetStateAction<Message>>
+}
 export interface dataSummary {
   statement_details: {
     bank_name: string,

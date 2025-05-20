@@ -12,14 +12,14 @@ interface requiredProps {
 
 const DataVisualization = ({ fileId }: requiredProps) => {
   const [report, setReport] = useState<dataSummary>()
-  useEffect(() => {
-      useVisualizeData(fileId).then((res) => {
-        console.log(res)
-        setReport(res)
-      }).catch((err) => {
-        console.log(err)
-      })
-  }, [])
+  // useEffect(() => {
+  //     useVisualizeData(fileId).then((res) => {
+  //       console.log(res)
+  //       setReport(res)
+  //     }).catch((err) => {
+  //       console.log(err)
+  //     })
+  // }, [])
   return (
     <Card className="animate-fade-in">
       <CardHeader>
