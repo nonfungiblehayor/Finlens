@@ -7,7 +7,7 @@ export const useAnalyzeDoc = async(
     const formData = new FormData();
     formData.append('file', file);
    try {
-    const response = await fetch("http://localhost:3000/analyze", {
+    const response = await fetch("https://finlens-ai.onrender.com/analyze", {
         method: "POST",
         body: formData
     })
@@ -45,7 +45,7 @@ export const useAnalyzeDoc = async(
 }
 export const useVisualizeData = async(file_id: string) => {
   try {
-    const response = await fetch("http://localhost:3000/visualize", {
+    const response = await fetch("https://finlens-ai.onrender.com/visualize", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export const useVisualizeData = async(file_id: string) => {
 }
 export const useAskData = async(file_id: string, question: string) => {
   try {
-    const response = await fetch("http://localhost:3000/ask", {
+    const response = await fetch("https://finlens-ai.onrender.com/ask", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
