@@ -5,15 +5,18 @@ import { ArrowUp, ArrowDown, Wallet, CreditCard } from 'lucide-react';
 
 interface AccountSummaryProps {
   basicInfo: {
-    name: string;
-    accountNumber: string;
-    dateRange: string;
-    openingBalance: string;
-    closingBalance: string;
+    bank_name: string,
+    account_holder_name: string,
+    account_number: string,
+    statement_period_from: string,
+    statement_period_to: string,
+    opening_balance: number,
+    closing_balance: number,
+    currency: string
   };
   overallFlow: {
-    moneyIn: string;
-    moneyOut: string;
+    total_money_in: number,
+    total_money_out: number
   };
 }
 
@@ -31,15 +34,19 @@ const AccountSummary = ({ basicInfo, overallFlow }: AccountSummaryProps) => {
           <div className="space-y-2">
             <div>
               <p className="text-xs opacity-80">Name</p>
-              <p className="font-medium">{basicInfo.name}</p>
+              <p className="font-medium">{basicInfo?.account_holder_name}</p>
+            </div>
+            <div>
+              <p className="text-xs opacity-80">Bank</p>
+              <p className="font-medium">{basicInfo?.bank_name}</p>
             </div>
             <div>
               <p className="text-xs opacity-80">Account Number</p>
-              <p className="font-medium">{basicInfo.accountNumber}</p>
+              <p className="font-medium">{basicInfo?.account_number}</p>
             </div>
             <div>
               <p className="text-xs opacity-80">Statement Period</p>
-              <p className="font-medium">{basicInfo.dateRange}</p>
+              <p className="font-medium">{basicInfo?.statement_period_from} - {basicInfo?.statement_period_to}</p>
             </div>
           </div>
         </CardContent>
@@ -56,21 +63,21 @@ const AccountSummary = ({ basicInfo, overallFlow }: AccountSummaryProps) => {
           <div className="space-y-2">
             <div>
               <p className="text-xs opacity-80">Opening Balance</p>
-              <p className="font-medium">{basicInfo.openingBalance}</p>
+              <p className="font-medium">{basicInfo?.opening_balance.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-xs opacity-80">Closing Balance</p>
-              <p className="text-xl font-bold">{basicInfo.closingBalance}</p>
+              <p className="text-xl font-bold">{basicInfo?.closing_balance.toLocaleString()}</p>
             </div>
             <div>
               <p className="text-xs opacity-80">Change</p>
               <p className="font-medium">
-                {parseFloat(basicInfo.closingBalance.replace('₦', '')) > 
-                 parseFloat(basicInfo.openingBalance.replace('₦', '')) ? '↑' : '↓'} 
+                {basicInfo?.closing_balance > 
+                 basicInfo?.opening_balance ? '↑' : '↓'} 
                  ₦{Math.abs(
-                   parseFloat(basicInfo.closingBalance.replace('₦', '')) - 
-                   parseFloat(basicInfo.openingBalance.replace('₦', ''))
-                 ).toFixed(2)}
+                   (basicInfo?.closing_balance) - 
+                   (basicInfo?.opening_balance)
+                 ).toFixed(2).toLocaleString()}
               </p>
             </div>
           </div>
@@ -86,7 +93,7 @@ const AccountSummary = ({ basicInfo, overallFlow }: AccountSummaryProps) => {
         </CardHeader>
         <CardContent>
           <div>
-            <p className="text-3xl font-bold">{overallFlow.moneyIn}</p>
+            <p className="text-3xl font-bold">{overallFlow?.total_money_in.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Total deposits & credits during this period</p>
           </div>
         </CardContent>
@@ -101,7 +108,7 @@ const AccountSummary = ({ basicInfo, overallFlow }: AccountSummaryProps) => {
         </CardHeader>
         <CardContent>
           <div>
-            <p className="text-3xl font-bold">{overallFlow.moneyOut}</p>
+            <p className="text-3xl font-bold">{overallFlow?.total_money_out.toLocaleString()}</p>
             <p className="text-xs text-muted-foreground mt-1">Total withdrawals & debits during this period</p>
           </div>
         </CardContent>

@@ -1,120 +1,55 @@
-
-import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Transaction } from '@/types';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { CreditCard, Search } from 'lucide-react';
+import { Copy, CreditCard } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
+import { Button } from './ui/button';
+import { useState } from 'react';
 
 interface TransactionAnalysisProps {
-  transactions: Transaction[];
+  analysisReport: string;
 }
 
-const TransactionAnalysis = ({ transactions }: TransactionAnalysisProps) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
-  const formatAmount = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
-
-  // Extract unique categories
-  const categories = ['all', ...new Set(transactions.map((t) => t.category))];
-
-  // Filter transactions based on search and category
-  const filteredTransactions = transactions.filter((t) => {
-    const matchesSearch = t.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || t.category === categoryFilter;
-    return matchesSearch && matchesCategory;
-  });
+const TransactionAnalysis = ({ analysisReport }: TransactionAnalysisProps) => {
+   const [isCopy, setCopy] = useState(false)
+    const handleCopy = () => {
+      navigator.clipboard.writeText(analysisReport).then(() => {
+        setCopy(true)
+      })
+    }
+    function callAfterCopy(fn) {
+      setTimeout(fn, 800)
+    }
+    callAfterCopy(() => {
+      setCopy(undefined)
+    }, )
 
   return (
-    <Card className="animate-fade-in">
-      <CardHeader>
+    <Card className="animate-fade-in h-[600px] overflow-y-scroll">
+      <CardHeader className='sticky top-0 bg-white'>
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="flex items-center">
               <CreditCard className="mr-2 h-5 w-5" />
               Transaction Analysis
             </CardTitle>
-            <CardDescription>Track and filter your financial activities</CardDescription>
+            <CardDescription>Here is an overview of your financial activities</CardDescription>
           </div>
+          <div className='flex items-center gap-4'>
+          <Button disabled={isCopy} onClick={handleCopy}>
+            {isCopy ? "Copied" : <> Copy Markdown <Copy size={20}/></>}
+          </Button>
+        </div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search transactions..."
-              className="pl-8"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <div className="sm:w-[180px]">
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category === 'all' ? 'All Categories' : category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredTransactions.length > 0 ? (
-                filteredTransactions.map((transaction) => (
-                  <TableRow key={transaction.id}>
-                    <TableCell>{formatDate(transaction.date)}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
-                    <TableCell>{transaction.category}</TableCell>
-                    <TableCell className={`text-right ${transaction.type === 'income' ? 'text-income' : 'text-expense'}`}>
-                      {transaction.type === 'income' ? '+' : '-'}{formatAmount(transaction.amount)}
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center py-4 text-muted-foreground">
-                    No transactions found
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        
-        <p className="text-xs text-muted-foreground mt-4">
-          Showing {filteredTransactions.length} of {transactions.length} transactions
-        </p>
+        {analysisReport !== "" &&  <ReactMarkdown
+          children={analysisReport}
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeSanitize]}
+        />}
       </CardContent>
     </Card>
   );
