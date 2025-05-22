@@ -14,7 +14,9 @@ const Layout = ({ children, className }: LayoutProps) => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
           <div className="flex items-center space-x-2">
-            <BarChart3 className="h-6 w-6 text-primary" />
+            <div className='bg-[#60a5fa] rounded-[6px]'>
+             <img src='/finlens2.png' className='w-10 h-10'/>
+            </div>
             <h1 className="text-xl font-bold">Finlens</h1>
           </div>
           <div className="ml-auto flex items-center space-x-4">
@@ -28,11 +30,11 @@ const Layout = ({ children, className }: LayoutProps) => {
       <footer className="border-t py-6">
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            © {new Date().getFullYear()} Finlens. Your personal financial assistant.
+            © {new Date().getFullYear()} Finlens. Your personal financial analyst.
           </p>
           <div className="flex items-center space-x-1">
             <p className="text-sm text-muted-foreground">
-              Built by @eibrahim_ayo for better financial decisions
+              Built by <a href='https://x.com/eibrahim_ayo'>@eibrahim_ayo</a> for better financial decisions
             </p>
           </div>
         </div>

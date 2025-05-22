@@ -95,7 +95,7 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
       <CardHeader>
         <CardTitle>Ask About Your Finances</CardTitle>
         <CardDescription>
-          Chat with our AI assistant about your bank statement
+          Chat with our AI assistant about your financial data
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col overflow-hidden">

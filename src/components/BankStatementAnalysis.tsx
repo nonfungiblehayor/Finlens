@@ -18,9 +18,9 @@ const BankStatementAnalysis = ({ data }: BankStatementAnalysisProps) => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold mb-2">Your Bank Statement Analysis</h1>
+        <h1 className="text-3xl font-bold mb-2">Your Financial Data Analysis</h1>
         <p className="text-muted-foreground">
-          Here's a comprehensive analysis of your financial activity from {data?.statement_details?.statement_period_from} to  {data?.statement_details?.statement_period_to}.
+          Here's a comprehensive analysis of your financial activities from {data?.statement_details?.statement_period_from} to  {data?.statement_details?.statement_period_to}.
         </p>
       </div>
 
