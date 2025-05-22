@@ -72,7 +72,7 @@ const sampleBankStatementData = {
 const Index = () => {
   const [showNewUI, setShowNewUI] = useState(false); // Toggle between new and old UI
   const [analysis, setAnalysis] = useState<Analysis>()
-  const [streamedText, setStreamedText] = useState('HHellow')
+  const [streamedText, setStreamedText] = useState('')
   return (
     <Layout>
       {!streamedText ? (
