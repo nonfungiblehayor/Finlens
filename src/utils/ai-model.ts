@@ -23,14 +23,12 @@ export const useAnalyzeDoc = async(
     const { value, done } = await reader.read();
     if (done) break;
 
-    buffer += decoder.decode(value, { stream: true });
-    // split on newline; keep last partial line in buffer
+    buffer += decoder.decode(value, { stream: true })
     const lines = buffer.split('\n');
     buffer = lines.pop()!;
 
     for (const line of lines) {
-      if (!line.trim()) continue;
-      // now JSON.parse back into { fileId?, text? }
+      if (!line.trim()) continue
       const msg = JSON.parse(line);
       onMessage(msg);
       if (msg.text) fullText += msg.text;

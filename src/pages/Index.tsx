@@ -72,7 +72,7 @@ const sampleBankStatementData = {
 const Index = () => {
   const [showNewUI, setShowNewUI] = useState(false); // Toggle between new and old UI
   const [analysis, setAnalysis] = useState<Analysis>()
-  const [streamedText, setStreamedText] = useState('')
+  const [streamedText, setStreamedText] = useState('HHellow')
   return (
     <Layout>
       {!streamedText ? (
@@ -91,7 +91,7 @@ const Index = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2">Your Financial Analysis</h1>
               <p className="text-muted-foreground">
-                Here's what we found in your bank statement. Explore the different sections below.
+                Here's what we found in your financial data. Explore the different sections below.
               </p>
             </div>
             <button
@@ -113,8 +113,8 @@ const Index = () => {
               <Tabs defaultValue="transactions" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 justify-items-center">
                   <TabsTrigger value="transactions">Account overview</TabsTrigger>
-                  {/* <TabsTrigger value="visuals">Data Visualization</TabsTrigger> */}
                   <TabsTrigger value="chat">Ask Questions</TabsTrigger>
+                  <TabsTrigger value="visuals">Data Visualization</TabsTrigger>
                 </TabsList>
                 <TabsContent value="transactions" className="mt-6">
                   <TransactionAnalysis analysisReport={streamedText} />

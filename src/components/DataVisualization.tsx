@@ -23,10 +23,11 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   return (
     <Card className="animate-fade-in">
       <CardHeader>
-        <CardTitle>Financial Advice & Insights</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 flex w-full items-center justify-center">
-        {report ?  <BankStatementAnalysis data={report}/> : <Loader2 className="h-30 w-30 animate-spin" /> }
+        {/* {report ?   */}
+        <BankStatementAnalysis data={report}/> 
+         {/* : <Loader2 className="h-30 w-30 animate-spin" /> } */}
       </CardContent>
     </Card>
   );

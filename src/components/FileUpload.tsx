@@ -74,9 +74,9 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   return (
     <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
       <CardHeader>
-        <CardTitle className="text-center text-2xl">Upload Bank Statement</CardTitle>
+        <CardTitle className="text-center text-2xl">Upload Financial Data</CardTitle>
         <CardDescription className="text-center">
-          Upload your bank statement to get personalized financial insights
+          Upload your financial data to get a well detailed overview of your financial activities
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -100,7 +100,9 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
             </div>
           ) : (
             <>
-              <Upload className="mb-4 h-10 w-10 text-muted-foreground" />
+            <label htmlFor="file-upload">
+                  <Upload className="mb-4 h-10 w-10 cursor-pointer text-muted-foreground" />
+            </label>
               <p className="mb-2 text-sm font-medium">
                 Drag and drop your file here or click to browse
               </p>
