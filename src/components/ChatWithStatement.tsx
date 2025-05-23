@@ -29,7 +29,7 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
     "How much income did i recieve during the statement period?",
     "What's my average daily spending?",
     "What's my average monthly spending?",
-    "Who are the top 5 people have sent money to?"
+    "What's my average monthly transactions?"
   ];
 
   useEffect(() => {

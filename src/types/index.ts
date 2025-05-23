@@ -80,7 +80,10 @@ export interface dataSummary {
     ]
   }
 }
-
+export interface summaryType {
+  summary: dataSummary,
+  setSummary: Dispatch<SetStateAction<dataSummary>>
+}
 export interface Transaction {
   id: string;
   date: string;

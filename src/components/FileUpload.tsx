@@ -15,7 +15,7 @@ interface FileUploadProps {
 }
 
 const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileUploadProps) => {
-  const { toast } = useToast();
+  const { toast } = useToast()
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
