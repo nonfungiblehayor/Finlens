@@ -1,4 +1,4 @@
-const baseUrl = process.env.VITE_BASE_URL
+const baseUrl = import.meta.env.VITE_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
     onMessage: (msg: { fileId?: string; text?: string }) => void,
