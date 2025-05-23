@@ -1,4 +1,4 @@
-
+const baseUrl = process.env.VITE_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
     onMessage: (msg: { fileId?: string; text?: string }) => void,
@@ -6,7 +6,7 @@ export const useAnalyzeDoc = async(
     const formData = new FormData();
     formData.append('file', file);
    try {
-    const response = await fetch("https://finlens-ai.onrender.com/analyze", {
+    const response = await fetch(`${baseUrl}/analyze`, {
         method: "POST",
         body: formData
     })
@@ -42,7 +42,7 @@ export const useAnalyzeDoc = async(
 }
 export const getVisualizeData = async(file_id: string) => {
   try {
-    const response = await fetch("https://finlens-ai.onrender.com/visualize-data", {
+    const response = await fetch(`${baseUrl}/visualize-data`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export const getVisualizeData = async(file_id: string) => {
 }
 export const useAskData = async(file_id: string, question: string) => {
   try {
-    const response = await fetch("https://finlens-ai.onrender.com/ask", {
+    const response = await fetch(`${baseUrl}/ask`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export const useAskData = async(file_id: string, question: string) => {
 }
 export const useVisualizeData = async(data: any, prompt: string) => {
   try {
-    const response = await fetch("https://finlens-ai.onrender.com/visualize", {
+    const response = await fetch(`${baseUrl}/visualize`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
