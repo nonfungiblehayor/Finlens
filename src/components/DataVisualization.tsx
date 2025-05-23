@@ -57,10 +57,10 @@ const DataVisualization = ({ fileId }: requiredProps) => {
     })
   };
   const visualizationExample = [
-    "Create a table for my top 5 income sources",
+    "Create a bar chart to illustrate my top 5 income sources",
     "Show a table for all my credit transactions",
     "Create a table to show all my debit transactions",
-    "Use a table to illustrate my monthly expenses by category"
+    "Use a bar chart to visualize my monthly expenses by category"
   ]
   const testWithExample = (content: string) => {
     setVisualizationPrompt(content)
