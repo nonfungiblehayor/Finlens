@@ -1,5 +1,4 @@
-type ChunkCallback = (chunk: string) => void;
-type CompleteCallback = (fullText: string) => void;
+
 export const useAnalyzeDoc = async(
     file: File,
     onMessage: (msg: { fileId?: string; text?: string }) => void,
@@ -41,9 +40,9 @@ export const useAnalyzeDoc = async(
     throw new Error(error)
    } 
 }
-export const useVisualizeData = async(file_id: string) => {
+export const getVisualizeData = async(file_id: string) => {
   try {
-    const response = await fetch("https://finlens-ai.onrender.com/visualize", {
+    const response = await fetch("https://finlens-ai.onrender.com/visualize-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +56,6 @@ export const useVisualizeData = async(file_id: string) => {
       const raw = await response.text()
       const processRaw = raw.replace(/^```json\s*\n?/, '').replace(/\n?```$/, '')
       const data = JSON.parse(processRaw)
-      console.log("visualization result", data)
       return data
     }
   } catch (error) {
@@ -80,8 +78,31 @@ export const useAskData = async(file_id: string, question: string) => {
     if(response) {
       const raw = await response.text()
       const data = JSON.parse(raw)
-      console.log("question result", data)
       return data?.answer?.parts[0]?.text
+    }
+  } catch (error) {
+    console.error(error)
+    throw new Error(error)
+  }
+}
+export const useVisualizeData = async(data: any, prompt: string) => {
+  try {
+    const response = await fetch("https://finlens-ai.onrender.com/visualize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: data, prompt: prompt })
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }   
+    if(response) {
+      const raw = await response.text()
+      if(raw.startsWith("```table") || raw.startsWith("```markdown")) {
+        const cleaned = raw.replace(/(^```markdown\s*|\s*```$)/g, '')
+       return cleaned
+      }
     }
   } catch (error) {
     console.error(error)
