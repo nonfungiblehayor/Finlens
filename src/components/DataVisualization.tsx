@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VisualizationResult from './VisualizationResult';
 import { useTransaction } from '@/context/transactions';
 import { PageSkeleton } from './ui/chatskeleton';
+import { chartType } from '@/types';
 
 interface requiredProps {
   fileId: string
@@ -42,13 +43,12 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   }
   const [visualizationPrompt, setVisualizationPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [visualizationResult, setVisualizationResult] = useState<{data: string, type: 'chart' | 'table' | null}>(null)
+  const [visualizationResult, setVisualizationResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
   const generateVisualization = async () => {
     if (!visualizationPrompt.trim()) return;
     setIsGenerating(true)
     useVisualizeData(summary.transactions.allTransactions, visualizationPrompt).then((res) => {
-      console.log(res)
-      setVisualizationResult({data: res, type: "table"})
+      setVisualizationResult({data: res, type: res?.type})
     }).catch((error) => {
       console.log(error)
       toast.error("An error occured try again later")
@@ -57,10 +57,10 @@ const DataVisualization = ({ fileId }: requiredProps) => {
     })
   };
   const visualizationExample = [
-    "Create a table for my top 5 income sources",
+    "Create a bar chart to illustrate my top 5 income sources",
     "Show a table for all my credit transactions",
     "Create a table to show all my debit transactions",
-    "Use a table to illustrate my monthly expenses by category"
+    "Use a bar chart to visualize my monthly expenses by category"
   ]
   const testWithExample = (content: string) => {
     setVisualizationPrompt(content)
@@ -68,7 +68,7 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   return (
     <>
     {
-       summary && loadingState === false &&(
+      summary && loadingState === false && (
         <Card className="animate-fade-in">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

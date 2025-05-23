@@ -84,6 +84,16 @@ export interface summaryType {
   summary: dataSummary,
   setSummary: Dispatch<SetStateAction<dataSummary>>
 }
+
+export interface chartType {
+  chart_type: string,
+  title: string,
+  type: string,
+  data: {
+    barData: any[],
+    labels: string[]
+  }
+}
 export interface Transaction {
   id: string;
   date: string;
