@@ -1,32 +1,17 @@
-
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer } from '@/components/ui/chart';
-import * as RechartsPrimitive from "recharts";
-import { formatCurrency } from '@/utils/formatters';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from './ui/button';
 import { Loader2, Save } from 'lucide-react';
-import { handleDownload } from '@/utils/savepdf';
-
-interface ChartVisualizationData {
-  type: string;
-  data: any[];
-  xKey: string;
-  yKeys: string[];
-  colors: string[];
-}
-
-interface TableVisualizationData {
-  columns: string[];
-  data: Record<string, string>[];
-}
+import { handleDownload, handleDownloadChart } from '@/utils/savepdf';
+import BarChart from './ui/react-chart';
+import type { Chart as ChartJS, ChartOptions } from 'chart.js';
 
 interface VisualizationResultProps {
   type: 'chart' | 'table' | null;
-  data: string;
+  data: any;
 }
 
 const components = {
@@ -52,10 +37,15 @@ const components = {
 
 const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
   const containerRef = useRef();
+  const chartRef = useRef<ChartJS<'bar'>>(null);
   const [savingState, setSavingState] = useState<boolean>()
   const handleSavePdf = () => {
     setSavingState(true)
     handleDownload(containerRef)
+  }
+  const handleSaveChart = () => {
+    setSavingState(true)
+    handleDownloadChart(chartRef, data?.title)
   }
   function callAfterCopy(fn) {
     setTimeout(fn, 800)
@@ -65,80 +55,24 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
   }, )
   if (!type || !data) return null;
   if (type === 'chart') {
-    const chartData = data as any;
-    const chartConfig: Record<string, {color: string, label: string}> = {};
-    chartData.yKeys.forEach((key, index) => {
-      chartConfig[key] = { 
-        color: chartData.colors[index] || '#60a5fa', 
-        label: key.charAt(0).toUpperCase() + key.slice(1)
-      };
-    });
     return (
-      <Card className='w-6/12'>
-        <CardHeader>
+      <Card className='w-full self-center'>
+        <CardHeader className='flex flex-row items-center justify-between px-4'>
           <CardTitle>Financial Visualization</CardTitle>
+          <Button onClick={handleSaveChart} disabled={savingState}>
+            {savingState ? <Loader2 size={10} className="animate-spin"/> :  <div className='flex items-center gap-x-2'>
+              Save Chart
+              <Save size={10}/>
+            </div>}
+          </Button>
         </CardHeader>
-        <CardContent>
-          <div className="h-full">
-            <ChartContainer config={chartConfig}>
-              <RechartsPrimitive.ResponsiveContainer>
-                {chartData.type === 'bar' ? (
-                  <RechartsPrimitive.BarChart data={chartData.data}>
-                    <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-                    <RechartsPrimitive.XAxis dataKey={chartData.xKey} />
-                    <RechartsPrimitive.YAxis />
-                    <RechartsPrimitive.Tooltip formatter={(value: number) => formatCurrency(value, '₦')} />
-                    <RechartsPrimitive.Legend />
-                    {chartData.yKeys.map((key, index) => (
-                      <RechartsPrimitive.Bar 
-                        key={key}
-                        dataKey={key} 
-                        fill={chartData.colors[index] || '#60a5fa'} 
-                      />
-                    ))}
-                  </RechartsPrimitive.BarChart>
-                ) : chartData.type === 'line' ? (
-                  <RechartsPrimitive.LineChart data={chartData.data}>
-                    <RechartsPrimitive.CartesianGrid strokeDasharray="3 3" />
-                    <RechartsPrimitive.XAxis dataKey={chartData.xKey} />
-                    <RechartsPrimitive.YAxis />
-                    <RechartsPrimitive.Tooltip formatter={(value: number) => formatCurrency(value, '₦')} />
-                    <RechartsPrimitive.Legend />
-                    {chartData.yKeys.map((key, index) => (
-                      <RechartsPrimitive.Line
-                        key={key}
-                        type="monotone"
-                        dataKey={key}
-                        stroke={chartData.colors[index] || '#60a5fa'}
-                        activeDot={{ r: 8 }}
-                      />
-                    ))}
-                  </RechartsPrimitive.LineChart>
-                ) : (
-                  <RechartsPrimitive.PieChart>
-                    <RechartsPrimitive.Pie
-                      data={chartData.data}
-                      dataKey={chartData.yKeys[0]}
-                      nameKey={chartData.xKey}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label
-                    >
-                      {chartData.data.map((entry, index) => (
-                        <RechartsPrimitive.Cell 
-                          key={`cell-${index}`}
-                          fill={chartData.colors[index % chartData.colors.length]}
-                        />
-                      ))}
-                    </RechartsPrimitive.Pie>
-                    <RechartsPrimitive.Tooltip formatter={(value: number) => formatCurrency(value, '₦')} />
-                    <RechartsPrimitive.Legend />
-                  </RechartsPrimitive.PieChart>
-                )}
-              </RechartsPrimitive.ResponsiveContainer>
-            </ChartContainer>
-          </div>
+        <CardContent className='flex items-center justify-center'>
+            <BarChart 
+              ref={chartRef}
+              labels={data?.data?.labels} 
+              data={data?.data?.barData} 
+              title={data?.title}
+            />
         </CardContent>
       </Card>
     );
@@ -157,7 +91,7 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
         <CardContent ref={containerRef}>
                  <ReactMarkdown
                         components={components}
-                        children={data}
+                        children={data?.markdown}
                         remarkPlugins={[remarkGfm]}
                         rehypePlugins={[rehypeSanitize]}
                       />
@@ -165,8 +99,6 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
       </Card>
     );
   }
-
   return null;
 };
-
 export default VisualizationResult;

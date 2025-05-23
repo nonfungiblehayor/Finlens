@@ -1,3 +1,5 @@
+import { chartType } from "@/types";
+
 const baseUrl = import.meta.env.VITE_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
@@ -99,10 +101,9 @@ export const useVisualizeData = async(data: any, prompt: string) => {
     }   
     if(response) {
       const raw = await response.text()
-      if(raw.startsWith("```table") || raw.startsWith("```markdown")) {
-        const cleaned = raw.replace(/(^```markdown\s*|\s*```$)/g, '')
-       return cleaned
-      }
+      const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
+      const data = JSON.parse(cleaned)
+      return data
     }
   } catch (error) {
     console.error(error)

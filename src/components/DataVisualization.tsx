@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VisualizationResult from './VisualizationResult';
 import { useTransaction } from '@/context/transactions';
 import { PageSkeleton } from './ui/chatskeleton';
+import { chartType } from '@/types';
 
 interface requiredProps {
   fileId: string
@@ -42,13 +43,12 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   }
   const [visualizationPrompt, setVisualizationPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [visualizationResult, setVisualizationResult] = useState<{data: string, type: 'chart' | 'table' | null}>(null)
+  const [visualizationResult, setVisualizationResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
   const generateVisualization = async () => {
     if (!visualizationPrompt.trim()) return;
     setIsGenerating(true)
     useVisualizeData(summary.transactions.allTransactions, visualizationPrompt).then((res) => {
-      console.log(res)
-      setVisualizationResult({data: res, type: "table"})
+      setVisualizationResult({data: res, type: res?.type})
     }).catch((error) => {
       console.log(error)
       toast.error("An error occured try again later")
@@ -68,7 +68,7 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   return (
     <>
     {
-       summary && loadingState === false &&(
+      summary && loadingState === false && (
         <Card className="animate-fade-in">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

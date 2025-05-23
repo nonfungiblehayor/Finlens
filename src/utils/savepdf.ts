@@ -1,9 +1,7 @@
 import { jsPDF } from "jspdf";
 import MarkdownIt from "markdown-it";
 import html2canvas from "html2canvas";
-
-
-const md = new MarkdownIt();
+import type { Chart as ChartJS, ChartOptions } from 'chart.js';
 
 export const handleDownload = async (containerRef) => {
     const el = containerRef.current
@@ -17,3 +15,12 @@ export const handleDownload = async (containerRef) => {
     pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pdfHeight);
     pdf.save("analysis-result.pdf");
   };
+export const handleDownloadChart = async(chartRef, title: string) => {
+  console.log(chartRef)
+  if (!chartRef.current) return;
+    const url = chartRef.current.toBase64Image();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${title ?? 'chart'}.png`;
+    link.click();
+}

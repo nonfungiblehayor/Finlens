@@ -3,74 +3,12 @@ import Layout from '@/components/Layout';
 import FileUpload from '@/components/FileUpload';
 import TransactionAnalysis from '@/components/TransactionAnalysis';
 import ChatWithStatement from '@/components/ChatWithStatement';
-import BankStatementAnalysis from '@/components/BankStatementAnalysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { mockStatementAnalysis } from '@/utils/mockData';
 import { Analysis } from '@/types';
 import DataVisualization from '@/components/DataVisualization';
 
-// Sample bank statement data
-const sampleBankStatementData = {
-  basicAccountInfo: {
-    name: "IBRAHIM AYODEJI IBRAHIM",
-    accountNumber: "2007132656",
-    dateRange: "01/01/2025 - 14/05/2025",
-    openingBalance: "₦2.14",
-    closingBalance: "₦20.14"
-  },
-  overallAccountFlow: {
-    moneyIn: "₦2,279,594.00",
-    moneyOut: "₦2,279,576.00"
-  },
-  // All the rest of the data from the provided JSON structure
-  transactionAnalysis: {
-    // ... This would be populated with the full data structure
-    incomeCredit: {
-      regularTransferFrom: [],
-      internalOrCreditReversals: []
-    },
-    expendituresDebit: {
-      transferToIndividuals: [],
-      paymentsToBusinessesAndServices: [],
-      billsAndUtilities: [],
-      foodAndGroceries: { totalAmount: "₦0", count: 0, details: [] },
-      transportation: { totalAmount: "₦0", count: 0, details: [] },
-      laundry: { totalAmount: "₦0", count: 0, details: [] },
-      upkeep: { totalAmount: "₦0", count: 0, details: [] },
-      posExpenses: { totalAmount: "₦0", count: 0, details: [] },
-      webPayments: { totalAmount: "₦0", count: 0, details: [] },
-      cashWithdrawals: { totalAmount: "₦0", count: 0, details: [] },
-      miscellaneous: { totalAmount: "₦0", count: 0, details: [] },
-      bankCharges: [],
-      otherPayments: []
-    }
-  },
-  dailySpendingData: [],
-  financialAdvice: [
-    "Your spending is quite high and varied, covering numerous categories and recipients.",
-    "A significant portion of your outflow is categorized as 'Expenses Withdrawal' or 'Muzammil Withdrawal'."
-  ],
-  dashboardMetrics: {
-    totalIncome: "₦2,279,594.00",
-    totalExpenses: "₦2,279,576.00",
-    netFlow: "₦18.00",
-    topIncomeSources: [
-      {source: "Muzammil Ismail / Polaris Bank", amount: "₦380,000.00"},
-      {source: "Ibrahim Ayodeji Ibrahim / Jaiz Bank", amount: "₦450,200.00"}
-    ],
-    topSpendingCategories: [
-      {category: "Cash Withdrawals", amount: "₦197,240.00"},
-      {category: "Payments to Businesses and Services", amount: "₦120,914.00"}
-    ],
-    topSpendingRecipients: [
-      {recipient: "Ibrahim Ayodeji (Self/Linked)", amount: "₦16,320.00"},
-      {recipient: "Muhammadbello Tosho Ibrahim", amount: "₦31,000.00"}
-    ]
-  }
-};
-
 const Index = () => {
-  const [showNewUI, setShowNewUI] = useState(false); // Toggle between new and old UI
+  const [showNewUI, setShowNewUI] = useState(false); 
   const [analysis, setAnalysis] = useState<Analysis>()
   const [streamedText, setStreamedText] = useState('')
   return (
@@ -106,10 +44,6 @@ const Index = () => {
            " <BankStatementAnalysis data={sampleBankStatementData} />"
           ) : (
             <>
-              {/* <Dashboard 
-                accountSummary={mockStatementAnalysis.accountSummary} 
-                categoryBreakdown={mockStatementAnalysis.categoryBreakdown} 
-              /> */}
               <Tabs defaultValue="transactions" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 justify-items-center">
                   <TabsTrigger value="transactions">Account overview</TabsTrigger>
