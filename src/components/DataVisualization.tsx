@@ -10,6 +10,7 @@ import VisualizationResult from './VisualizationResult';
 import { useTransaction } from '@/context/transactions';
 import { PageSkeleton } from './ui/chatskeleton';
 import { chartType } from '@/types';
+import PieChart from './ui/visual-chart/pie-chart';
 
 interface requiredProps {
   fileId: string
@@ -68,7 +69,7 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   return (
     <>
     {
-      summary && loadingState === false && (
+       summary && loadingState === false && (
         <Card className="animate-fade-in">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

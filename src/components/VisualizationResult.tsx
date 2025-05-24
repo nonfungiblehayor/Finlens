@@ -6,8 +6,10 @@ import rehypeSanitize from 'rehype-sanitize';
 import { Button } from './ui/button';
 import { Loader2, Save } from 'lucide-react';
 import { handleDownload, handleDownloadChart } from '@/utils/savepdf';
-import BarChart from './ui/react-chart';
-import type { Chart as ChartJS, ChartOptions } from 'chart.js';
+import type { Chart as ChartJS, } from 'chart.js';
+import LineChart from './ui/visual-chart/line-chart';
+import BarChart from './ui/visual-chart/bar-chart';
+import PieChart from './ui/visual-chart/pie-chart';
 
 interface VisualizationResultProps {
   type: 'chart' | 'table' | null;
@@ -67,13 +69,12 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
           </Button>
         </CardHeader>
         <CardContent className='flex items-center justify-center'>
-            <BarChart 
-              ref={chartRef}
-              labels={data?.data?.labels} 
-              data={data?.data?.barData} 
-              title={data?.title}
-            />
+          {data && data?.chart_type === "bar" && <BarChart title={data?.title} labels={data?.data?.labels} data={data?.data?.barData} />}
+          {data && data?.chart_type === "pie" && 
+          <PieChart title={data?.title} labels={data?.data?.labels} data={data?.data?.data} borderColors={data?.data?.borderColor} bgColors={data?.data?.backgroundColor}/>
+          }
         </CardContent>
+        {data && data?.chart_type === "line" && <LineChart title={data?.title} data={data?.data?.datasets} />}
       </Card>
     );
   } else if (type === 'table') {
