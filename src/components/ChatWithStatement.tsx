@@ -93,9 +93,9 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
   return (
     <Card className="w-full h-[600px] flex flex-col">
       <CardHeader>
-        <CardTitle>Ask About Your Finances</CardTitle>
+        <CardTitle>Ask About Your Data</CardTitle>
         <CardDescription>
-          Chat with our AI assistant about your financial data
+          Chat with our AI assistant about your data
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col overflow-hidden">
@@ -162,7 +162,7 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a question about your finances..."
+            placeholder="Ask a question about your data..."
             disabled={isLoading}
             className="flex-1"
           />

@@ -26,7 +26,7 @@ import {
 const LineChart = ({data, title}) => {
       const chartData = {
          datasets: data?.map(set => ({
-           label: set?.labels || set?.label,
+          //  label: set?.labels || set?.label,
            data: set?.data,
            fill: false,                    
            tension: 0.4,   
@@ -46,11 +46,11 @@ const LineChart = ({data, title}) => {
          scales: {
            x: {               
              display: true,
-             title: { display: true, text: 'Month' },
+             title: { display: true,  },
            },
            y: {
              beginAtZero: true,
-             title: { display: true, text: 'Value' },
+             title: { display: true, },
            },
          },
        };

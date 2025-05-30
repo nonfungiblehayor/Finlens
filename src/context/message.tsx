@@ -7,7 +7,7 @@ export const MessageProvider = ({children}: {children: ReactNode}) => {
     const [messages, setMessages] = useState<Message[]>(
         [
         {
-          content: "Hello! I'm your financial assistant. I've analyzed your financial data and I'm ready to answer your questions about your finances. What would you like to know?",
+          content: "Hello! I'm your data analysis assistant. I've analyzed your data and I'm ready to answer your questions. What would you like to know?",
           isUser: false,
           timestamp: new Date()
         }

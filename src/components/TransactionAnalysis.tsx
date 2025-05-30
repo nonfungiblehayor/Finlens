@@ -33,9 +33,9 @@ const TransactionAnalysis = ({ analysisReport }: TransactionAnalysisProps) => {
           <div>
             <CardTitle className="flex items-center">
               <CreditCard className="mr-2 h-5 w-5" />
-              Transaction Analysis
+              Data Analysis
             </CardTitle>
-            <CardDescription>Here is an overview of your financial activities</CardDescription>
+            <CardDescription>Here’s a detailed overview of your data</CardDescription>
           </div>
           <div className='flex items-center gap-4'>
           <Button disabled={isCopy} onClick={handleCopy}>
