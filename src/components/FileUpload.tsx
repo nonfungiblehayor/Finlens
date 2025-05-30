@@ -23,16 +23,20 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      // Check if file is PDF or CSV
+      // Check if file is PDF, CSV, or Excel
       if (selectedFile.type === 'application/pdf' || 
           selectedFile.type === 'text/csv' || 
+          selectedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+          selectedFile.type === 'application/vnd.ms-excel' ||
           selectedFile.name.endsWith('.pdf') || 
-          selectedFile.name.endsWith('.csv')) {
+          selectedFile.name.endsWith('.csv') ||
+          selectedFile.name.endsWith('.xlsx') ||
+          selectedFile.name.endsWith('.xls')) {
         setFile(selectedFile);
       } else {
         toast({
           title: "Invalid file type",
-          description: "Please upload a PDF or CSV bank statement.",
+          description: "Please upload a PDF, CSV, or Excel file with your data.",
           variant: "destructive"
         });
       }
@@ -46,7 +50,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
     setIsUploading(false);
     toast({
       title: "File uploaded successfully",
-      description: "Beginning analysis of your statement...",
+      description: "Beginning analysis of your data...",
     });
     setIsAnalyzing(true);
     try {
@@ -74,9 +78,9 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   return (
     <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
       <CardHeader>
-        <CardTitle className="text-center text-2xl">Upload Data</CardTitle>
+        <CardTitle className="text-center text-2xl">Upload Your Data</CardTitle>
         <CardDescription className="text-center">
-        Upload your data and get an instant, AI-generated breakdown of your metrics—complete with interactive visualizations and on-demand insights.
+          Upload any dataset and get instant AI-powered analysis, interactive visualizations, and intelligent insights to drive better decisions.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -107,13 +111,13 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
                 Drag and drop your file here or click to browse
               </p>
               <p className="text-xs text-muted-foreground">
-                Supported formats: PDF, CSV
+                Supported formats: PDF, CSV, Excel (.xlsx, .xls)
               </p>
               <Input
                 type="file"
                 className="hidden"
                 id="file-upload"
-                accept=".pdf,.csv,application/pdf,text/csv"
+                accept=".pdf,.csv,.xlsx,.xls,application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                 onChange={handleFileChange}
               />
               <label htmlFor="file-upload">
@@ -137,7 +141,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
         >
           {isUploading ? "Uploading..." : 
            isAnalyzing ? "Analyzing..." : 
-           "Analyze Statement"}
+           "Analyze Data"}
         </Button>
       </CardFooter>
     </Card>
@@ -145,14 +149,3 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
 };
 
 export default FileUpload;
-   // try {
-    // //   setIsAnalyzing(false);
-    // // onAnalysisComplete();
-    // // toast({
-    // //   title: "Analysis complete",
-    // //   description: "Your financial insights are ready!",
-    // //   variant: "default",
-    // // });
-    // } catch (error) {
-    //   console.error(error)
-    // }

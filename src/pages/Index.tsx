@@ -1,11 +1,13 @@
+
 import { useState } from 'react';
 import Layout from '@/components/Layout';
 import FileUpload from '@/components/FileUpload';
 import TransactionAnalysis from '@/components/TransactionAnalysis';
 import ChatWithStatement from '@/components/ChatWithStatement';
+import DataVisualization from '@/components/DataVisualization';
+import AIAgent from '@/components/AIAgent';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Analysis } from '@/types';
-import DataVisualization from '@/components/DataVisualization';
 
 const Index = () => {
   const [showNewUI, setShowNewUI] = useState(false); 
@@ -18,7 +20,7 @@ const Index = () => {
           <div className="max-w-lg w-full px-4">
             <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
-            An AI agent for every dataset—get answers, generate visualizations, and drive smarter decisions across all your data.
+              An AI agent for every dataset—get answers, generate visualizations, and drive smarter decisions across all your data.
             </p>
             <FileUpload onAnalysisComplete={setAnalysis} setStreamedText={setStreamedText} streamedText={streamedText}/>
           </div>
@@ -44,13 +46,14 @@ const Index = () => {
            " <BankStatementAnalysis data={sampleBankStatementData} />"
           ) : (
             <>
-              <Tabs defaultValue="transactions" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 justify-items-center">
-                  <TabsTrigger value="transactions">Account overview</TabsTrigger>
+              <Tabs defaultValue="overview" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 justify-items-center">
+                  <TabsTrigger value="overview">Data Overview</TabsTrigger>
                   <TabsTrigger value="chat">Ask Questions</TabsTrigger>
                   <TabsTrigger value="visuals">Data Visualization</TabsTrigger>
+                  <TabsTrigger value="agent">AI Agent</TabsTrigger>
                 </TabsList>
-                <TabsContent value="transactions" className="mt-6">
+                <TabsContent value="overview" className="mt-6">
                   <TransactionAnalysis analysisReport={streamedText} />
                 </TabsContent>
                 <TabsContent value="chat" className="mt-6">
@@ -58,6 +61,9 @@ const Index = () => {
                 </TabsContent>
                 <TabsContent value="visuals" className="mt-6">
                   <DataVisualization fileId={analysis?.fileId} />
+                </TabsContent>
+                <TabsContent value="agent" className="mt-6">
+                  <AIAgent fileId={analysis?.fileId} />
                 </TabsContent>
               </Tabs>
             </>

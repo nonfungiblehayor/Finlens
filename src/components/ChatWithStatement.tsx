@@ -12,6 +12,7 @@ import { useAskData } from '@/utils/ai-model';
 import { ChatSkeleton } from './ui/chatskeleton';
 import { Message } from '@/types';
 import { useMessage } from '@/context/message';
+
 interface ChatWithStatementProps {
   fileId: string
 }
@@ -23,13 +24,13 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Sample questions the user might want to ask
+  // Sample questions for general data analysis
   const sampleQuestions = [
-    "What was my highest expense last month?",
-    "How much income did i recieve during the statement period?",
-    "What's my average daily spending?",
-    "What's my average monthly spending?",
-    "What's my average monthly transactions?"
+    "What are the main patterns in my data?",
+    "Can you summarize the key findings?",
+    "What are the most important metrics?",
+    "Are there any anomalies or outliers?",
+    "What trends do you see over time?"
   ];
 
   useEffect(() => {
@@ -90,12 +91,13 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
       });
     }
   };
+
   return (
     <Card className="w-full h-[600px] flex flex-col">
       <CardHeader>
-        <CardTitle>Ask About Your Data</CardTitle>
+        <CardTitle>Quick Questions</CardTitle>
         <CardDescription>
-          Chat with our AI assistant about your data
+          Ask quick questions about your data for instant insights
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col overflow-hidden">
