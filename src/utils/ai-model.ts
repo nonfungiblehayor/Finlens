@@ -87,14 +87,14 @@ export const useAskData = async(file_id: string, question: string) => {
     throw new Error(error)
   }
 }
-export const useVisualizeData = async(data: any, prompt: string) => {
+export const useVisualizeData = async(file_id: string, prompt: string) => {
   try {
     const response = await fetch(`${baseUrl}/visualize`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data: data, prompt: prompt })
+      body: JSON.stringify({ fileId: file_id, prompt: prompt })
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

@@ -17,38 +17,14 @@ interface requiredProps {
 }
 
 const DataVisualization = ({ fileId }: requiredProps) => {
-  const { summary, setSummary} = useTransaction()
-  const [loadingState, setLoadingState] = useState(false)
-  useEffect(() => {
-    if(!summary) {
-      setLoadingState(true)
-      getVisualizeData(fileId).then((response) => {
-        setSummary(response)
-      }).catch((err) => {
-        console.log(err)
-        toast.error("Error while generating transaction data")
-      }).finally(() => {
-        setLoadingState(false)
-      })
-    }
-  }, [])
-  const generateData = () => {
-    setLoadingState(true)
-    getVisualizeData(fileId).then((response) => {
-      setSummary(response)
-    }).catch((err) => {
-      toast.error("Error while generating transaction data")
-    }).finally(() => {
-      setLoadingState(false)
-    })
-  }
   const [visualizationPrompt, setVisualizationPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [visualizationResult, setVisualizationResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
   const generateVisualization = async () => {
     if (!visualizationPrompt.trim()) return;
     setIsGenerating(true)
-    useVisualizeData(summary.transactions.allTransactions, visualizationPrompt).then((res) => {
+    useVisualizeData(fileId, visualizationPrompt).then((res) => {
+      console.log(res)
       setVisualizationResult({data: res, type: res?.type})
     }).catch((error) => {
       console.log(error)
@@ -69,18 +45,17 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   return (
     <>
     {
-       summary && loadingState === false && (
+       (
         <Card className="animate-fade-in">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <span className="text-2xl font-bold">Data Visualization</span>
           </CardTitle>
-          <BankStatementAnalysis data={summary}/>
         </CardHeader>
         <CardContent className="flex flex-col items-start justify-start space-y-8 w-full">
         <div className="bg-muted/50 w-6/12 self-center p-4 h-full rounded-lg">
             <p className="text-sm text-muted-foreground mb-2">
-              Describe how you would like to visualize your financial data. For example:
+              Describe how you would like to visualize your data. For example:
             </p>
             <div className='flex flex-wrap gap-2 mb-4'>
             {visualizationExample.map((example, index) => (
@@ -128,24 +103,6 @@ const DataVisualization = ({ fileId }: requiredProps) => {
           ) : null}
         </CardContent>
       </Card> 
-      )
-    }
-    {
-       loadingState && (
-        <div className='w-full flex flex-col items-center justify-center'>
-          Extracting and Analysing your data for visualization
-         <PageSkeleton />
-        </div>
-      )
-    }
-    {
-      !summary && loadingState === false && (
-        <div className='w-full flex flex-col gap-y-4 items-center justify-center'>
-            <p className='text-red-500 text-center text-[14px]'>An Error occured while generating your transaction data click on the button below to try again</p>
-            <Button disabled={loadingState} onClick={generateData}>
-              {loadingState ? <Loader2 className="h-4 w-4 animate-spin text-primary" />: "Try again"}
-            </Button>
-        </div>
       )
     }
     </>

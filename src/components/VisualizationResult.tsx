@@ -60,7 +60,7 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
     return (
       <Card className='w-full self-center'>
         <CardHeader className='flex flex-row items-center justify-between px-4'>
-          <CardTitle>Financial Visualization</CardTitle>
+          <CardTitle>Data Visualization</CardTitle>
           <Button onClick={handleSaveChart} disabled={savingState}>
             {savingState ? <Loader2 size={10} className="animate-spin"/> :  <div className='flex items-center gap-x-2'>
               Save Chart

@@ -74,9 +74,9 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   return (
     <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
       <CardHeader>
-        <CardTitle className="text-center text-2xl">Upload Financial Data</CardTitle>
+        <CardTitle className="text-center text-2xl">Upload Data</CardTitle>
         <CardDescription className="text-center">
-          Upload your financial data to get a well detailed overview of your financial activities
+        Upload your data and get an instant, AI-generated breakdown of your metrics—complete with interactive visualizations and on-demand insights.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">

@@ -18,7 +18,7 @@ const Index = () => {
           <div className="max-w-lg w-full px-4">
             <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
-              Your AI-powered financial data analyst to help you make smarter money decisions
+            An AI agent for every dataset—get answers, generate visualizations, and drive smarter decisions across all your data.
             </p>
             <FileUpload onAnalysisComplete={setAnalysis} setStreamedText={setStreamedText} streamedText={streamedText}/>
           </div>
@@ -27,16 +27,16 @@ const Index = () => {
         <div className="space-y-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold mb-2">Your Financial Analysis</h1>
+              <h1 className="text-3xl font-bold mb-2">Your Data Analysis</h1>
               <p className="text-muted-foreground">
-                Here's what we found in your financial data. Explore the different sections below.
+                Here's what we found in your data. Explore the different sections below.
               </p>
             </div>
             <button
-              onClick={() => setShowNewUI(!showNewUI)}
+              onClick={() => setStreamedText("")}
               className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
             >
-              Switch to {showNewUI ? 'Classic' : 'Enhanced'} View
+             Upload a new file
             </button>
           </div>
           
