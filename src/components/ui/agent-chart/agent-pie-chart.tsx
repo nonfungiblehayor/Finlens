@@ -13,7 +13,7 @@ import {
   import { Pie } from 'react-chartjs-2';
   import type { ChartOptions } from 'chart.js';
   import ChartDataLabels from 'chartjs-plugin-datalabels';
-const PieChart = ({ labels, title, data, bgColors, borderColors, chartRef }) => {
+  const AgentPieChart = ({ labels, title, data, bgColors, borderColors, chartRef}) => {
     const chartData = {
         labels,
         datasets: [
@@ -53,4 +53,4 @@ const PieChart = ({ labels, title, data, bgColors, borderColors, chartRef }) => 
     
       return <Pie ref={chartRef} data={chartData} options={options} />;
 }
-export default PieChart
+export default AgentPieChart

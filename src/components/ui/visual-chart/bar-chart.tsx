@@ -21,7 +21,7 @@ import {
     Tooltip,
     Legend
   );
-const BarChart = ({labels, data, title}) => {
+const BarChart = ({labels, data, title, chartRef}) => {
     const chartData = {
         labels,
         datasets: [
@@ -45,6 +45,6 @@ const BarChart = ({labels, data, title}) => {
         },
       };
     
-      return <Bar data={chartData} options={options} />;
+      return <Bar ref={chartRef} data={chartData} options={options} />;
 }
 export default BarChart

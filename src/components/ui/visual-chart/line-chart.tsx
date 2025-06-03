@@ -23,7 +23,7 @@ import {
     Legend
   );
   ChartJS.unregister(ChartDataLabels);
-const LineChart = ({data, title}) => {
+const LineChart = ({data, title, chartRef}) => {
       const chartData = {
          datasets: data?.map(set => ({
           //  label: set?.labels || set?.label,
@@ -55,6 +55,6 @@ const LineChart = ({data, title}) => {
          },
        };
      
-       return <Line data={chartData} options={options} />;
+       return <Line ref={chartRef} data={chartData} options={options} />;
 }
 export default LineChart

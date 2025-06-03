@@ -1,4 +1,3 @@
-import { chartType } from "@/types";
 
 const baseUrl = import.meta.env.VITE_BASE_URL
 export const useAnalyzeDoc = async(
@@ -42,29 +41,6 @@ export const useAnalyzeDoc = async(
     throw new Error(error)
    } 
 }
-export const getVisualizeData = async(file_id: string) => {
-  try {
-    const response = await fetch(`${baseUrl}/visualize-data`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ fileId: file_id })
-    })
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }    
-    if(response) {
-      const raw = await response.text()
-      const processRaw = raw.replace(/^```json\s*\n?/, '').replace(/\n?```$/, '')
-      const data = JSON.parse(processRaw)
-      return data
-    }
-  } catch (error) {
-    console.error(error)
-    throw new Error(error)
-  }
-}
 export const useAskData = async(file_id: string, question: string) => {
   try {
     const response = await fetch(`${baseUrl}/ask`, {
@@ -103,6 +79,57 @@ export const useVisualizeData = async(file_id: string, prompt: string) => {
       const raw = await response.text()
       const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
       const data = JSON.parse(cleaned)
+      return data
+    }
+  } catch (error) {
+    console.error(error)
+    throw new Error(error)
+  }
+}
+function sanitizeJsonString(raw) {
+  return raw.replace(
+    // This regex finds every double-quoted JSON string (including existing escapes):
+    /"([^"\\]*(\\.[^"\\]*)*)"/g,
+    (fullMatch) => {
+      // fullMatch includes the surrounding quotes, e.g. "\"some\ntext\""
+      const inner = fullMatch.slice(1, -1); // strip the leading + trailing quote
+
+      // 1) Escape any literal backslash → "\\"  
+      // 2) Escape any literal double-quote → '\"'  
+      // 3) Escape any literal carriage-return → "\r"  
+      // 4) Escape any literal newline  → "\n"  
+      // 5) Escape any literal tab      → "\t"
+      const escapedInner = inner
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/\r/g, "\\r")
+        .replace(/\n/g, "\\n")
+        .replace(/\t/g, "\\t");
+
+      return `"${escapedInner}"`;
+    }
+  );
+}
+export const useAgent = async(file_id: string) => {
+  const agentId = "finlensAgent"
+  try {
+    const response = await fetch(`http://localhost:4111/api/agents/${agentId}/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ role: "user", messages: file_id })
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }   
+    if(response) {
+      const raw = await response.text()
+      const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
+      const dataResult = JSON.parse(cleaned)
+      const rawResult = dataResult?.response?.body?.candidates[0]?.content?.parts[0]?.text.replace(/(^```json\s*|\s*```$)/g, '')
+      const cleanedData = rawResult?.replace(/\\(?!(["\\/bfnrt]|u[0-9A-Fa-f]{4}))/g, '')
+      const data = JSON.parse(cleanedData)
       return data
     }
   } catch (error) {

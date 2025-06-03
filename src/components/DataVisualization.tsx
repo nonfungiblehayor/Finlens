@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getVisualizeData, useVisualizeData } from '@/utils/ai-model';
-import BankStatementAnalysis from './BankStatementAnalysis';
+import { useVisualizeData } from '@/utils/ai-model';
 import { Loader2, ChartBar, Table } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import VisualizationResult from './VisualizationResult';
-import { useTransaction } from '@/context/transactions';
 import { PageSkeleton } from './ui/chatskeleton';
 import { chartType } from '@/types';
-import PieChart from './ui/visual-chart/pie-chart';
 
 interface requiredProps {
   fileId: string

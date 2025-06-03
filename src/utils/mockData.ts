@@ -183,3 +183,483 @@ export const mockStatementAnalysis: BankStatementAnalysis = {
     },
   ]
 };
+export const agentChart = [{
+  chart_type: "bar",
+  data: {
+    barData: [202418, 150000, 37500, 35580, 26750],
+    labels: ["Ayodeji", "ibrahim", "xhully", "id wire", "logic"]
+  },
+  title: "Top 5 income sources",
+  type: "chart"
+}]
+export const mockAgentDate = {
+  "analysis": "Based on the provided OPay Account Statement for IBRAHIM AYODEJI IBRAHIM from March 15, 2025, to May 13, 2025, the following key insights were identified:\n\n*   **Account Activity:** The account shows high transaction volume with 102 credit transactions and 109 debit transactions within the ~2-month period.\n*   **Significant Fund Sources:** A major portion of credits comes from individuals like BILIKIS IYABO IBRAHIM and also transactions described as 'Transfer from IBRAHIM, AYODEJI IBRAHIM' and 'Transfer from null' which might represent internal transfers or other credit types.\n*   **Primary Expenditures:** Frequent debits are made for 'Mobile Data' and 'Airtime'. Transfers to specific individuals (e.g., ZHULKIFIL SULEIMAN, KEHINDE IREWAMI OLOKODANA, AKEEM LANRE OLATUNDE) and businesses (e.g., GREENLIGHT PLANET SUN KING NIGERIA LIMITED, sulfam foods, Trendit Media Ltd) are also significant.\n*   **OWealth Integration:** The account actively uses the OWealth feature, with frequent 'OWealth Deposit (AutoSave)' transactions moving funds out of the primary wallet balance into OWealth. The OWealth balance grew significantly during the period, earning small amounts of interest daily.\n*   **Transaction Costs:** An 'Electronic Money Transfer Levy' is applied to many outward transfers.\n*   **Overall Movement:** The total debits (#572,054.00) exceed the total credits (#469,159.66) over the statement period, indicating a net outflow if starting from a zero balance, aligning with the detailed transaction list starting from a #0.00 balance and ending with a non-zero balance.\n*   **Balance Context:** The main summary balances appear inconsistent (#0.00 opening/closing) compared to the detailed transactions, but the 'Current Balance' (#10,373.40) aligns closely with the 'Summary - OWealth Balance' closing figure (#10,373.23), suggesting the detailed transaction list and current balance likely reflect the combined OPay wallet and OWealth activity.",
+  "answer_question": [
+    {
+      "question": "What is the total value of funds transferred to each unique counterparty?",
+      "answer": "Okay, here is the breakdown of the total value of funds transferred *from* the account owner (IBRAHIM AYODEJI IBRAHIM) to each unique counterparty, based on the debit transactions listed in the statement:\n\n**Summary of Funds Transferred To Unique Counterparties:**\n\n*   **Ibrahim Ayodeji Ibrahim** (Transfers to self or internal accounts): ₦140,700.00\n*   **GREENLIGHT PLANET SUN KING NIGERIA LIMITED:** ₦130,140.00\n*   **OWealth Deposit (AutoSave)** (Internal OPay transfers): ₦64,030.00\n*   **AIRTEL-DEAL3072-Ilorin Shop - Sales:** ₦30,000.00\n*   **TV:** ₦16,800.00\n*   **ZHULKIFIL SULEIMAN:** ₦16,020.00\n*   **sulfam foods owned by FARIDOH ABDUL:** ₦10,500.00\n*   **AKEEM LANRE OLATUNDE:** ₦10,250.00\n*   **LAWAL ZAKA:** ₦7,200.00\n*   **Easykolad Multibiz 2:** ₦6,220.00\n*   **Airtime:** ₦5,700.00\n*   **ABDULRASHEED OLUWASEUN TAIWO:** ₦3,000.00\n*   **KEHINDE IREWAMI OLOKODANA:** ₦3,000.00\n*   **Mobile Data:** ₦3,024.00\n*   **OMOKAYODE OLASHEU BABATUNDE:** ₦2,900.00\n*   **MUMMY OPE GENERAL MERCHANT:** ₦2,100.00\n*   **OLUWAKEMI SEUN ADEGBOYE:** ₦2,100.00\n*   **Trendit Media Ltd FLW:** ₦2,050.00\n*   **kolawole samson jimoh:** ₦2,000.00\n*   **ABDULGAFAR TOYIN IBRAHIM:** ₦2,000.00\n*   **ABDULLAHI OLAWALE IBRAHIM:** ₦1,500.00\n*   **FORTUNETECH LIMITED:** ₦1,080.00\n*   **HONGKONG FORTUNETECH LIMITED FLW:** ₦1,600.00\n*   **MUHAMMADTUKUR ATIKU:** ₦1,000.00\n*   **TAIYE IREBAMI OLOKODANA:** ₦1,000.00\n*   **ABDULGAFAR OLUWAFERAMI AYUBA:** ₦1,000.00\n*   **ABUBAKAR ADAMU BALA:** ₦3,000.00\n*   **YUSUF BARAKAT ADEBISI:** ₦5,000.00\n*   **SUNDAY SAMUEL ADEWOLE:** ₦500.00\n*   **TEMITOPE AJOKE OBANAYO:** ₦500.00\n*   **F.I.S MULTI-BIZ VENTURES - FAUSAT BIDEMI ISMAIL SULAIMAN:** ₦600.00\n*   **BABATUNDE AFUSAT BOLA:** ₦400.00\n*   **Electronic Money Transfer Levy:** ₦300.00\n\nPlease note that \"OWealth Deposit (AutoSave)\", \"Mobile Data\", \"Airtime\", and \"Electronic Money Transfer Levy\" are categorised here as counterparties as they represent entities or services to which funds were transferred out of the account, even if they are not traditional personal or business recipients in every case. \"Transfer to Ibrahim Ayodeji Ibrahim\" seems to represent transfers between accounts owned by the same individual."
+    },
+    {
+      "question": "How does the frequency of OWealth deposits compare to other transaction types?",
+      "answer": "Based on the provided account statement:\n\n1.  The only type of OWealth deposit explicitly listed is **\"OWealth Deposit (AutoSave)\"**.\n2.  In the \"Summary - OWealth Balance\" section (where these deposits are recorded as inflows to the OWealth account), there are **5** instances of \"OWealth Deposit (AutoSave)\" listed between March 15, 2025, and May 13, 2025. (March 15, March 26, April 13, April 14, April 15).\n\nComparing this frequency to other transaction types:\n\n*   **OWealth Interest Earned:** These transactions occur almost **daily** in the OWealth Balance summary, making them the *most frequent* type of OWealth transaction and the most frequent transaction overall in this period (counting over 60 instances).\n*   **Transfers (from/to others):** These are also very frequent, appearing multiple times across both the Wallet and OWealth summaries, and are significantly more frequent than OWealth AutoSave deposits.\n*   **Mobile Data & Airtime purchases:** These also appear quite frequently throughout the statement (over 20 instances combined), more often than OWealth AutoSave deposits.\n*   **Electronic Money Transfer Levy:** These appear several times (6 instances), also more frequently than OWealth AutoSave deposits.\n\nIn summary, \"OWealth Deposit (AutoSave)\" occurs relatively infrequently (5 times in the statement period) compared to most other transaction types listed, particularly compared to OWealth Interest Earned, transfers, mobile data, and airtime purchases."
+    },
+    {
+      "question": "What is the total amount spent on Electronic Money Transfer Levy?",
+      "answer": "Based on the document provided, the \"Electronic Money Transfer Levy\" transactions are listed in the main \"Summary - Wallet Balance\" table.\n\nLet's sum the debit amounts for these transactions:\n\n*   Apr 08: -50.00\n*   Apr 08: -50.00\n*   Apr 09: -50.00\n*   Apr 11: -50.00\n*   Apr 13: -50.00\n*   Apr 19: -50.00\n*   May 13: -50.00\n\nTotal Electronic Money Transfer Levy spent = 50 + 50 + 50 + 50 + 50 + 50 + 50 = 350.\n\nThe total amount spent on Electronic Money Transfer Levy is **#350.00**."
+    }
+  ],
+  "visualization": [
+    {
+      "chart_type": "bar",
+      "data": {
+        "barData": [
+          130140,
+          131100,
+          125950,
+          11330,
+          3000
+        ],
+        "labels": [
+          "GREENLIGHT PLANET SUN KING NIGERIA LIMITED",
+          "Transfer to Ibrahim Ayodeji Ibrahim",
+          "OWealth Deposit (AutoSave)",
+          "Transfer to ZHULKIFIL SULEIMAN",
+          "Transfer to ABUBAKAR ADAMU BALA"
+        ]
+      },
+      "title": "Top 5 Debit Transaction Descriptions by Total Amount",
+      "type": "chart"
+    },
+    {
+      "chart_type": "line",
+      "data": {
+        "datasets": [
+          {
+            "data": [
+              {
+                "x": "2025-03-15T00:00:00",
+                "y": 0
+              },
+              {
+                "x": "2025-03-15T11:59:22",
+                "y": 3000
+              },
+              {
+                "x": "2025-03-15T16:16:41",
+                "y": 900
+              },
+              {
+                "x": "2025-03-15T22:18:13",
+                "y": 0
+              },
+              {
+                "x": "2025-03-18T15:16:03",
+                "y": 68
+              },
+              {
+                "x": "2025-03-18T15:16:16",
+                "y": 0
+              },
+              {
+                "x": "2025-03-20T12:50:10",
+                "y": 3000
+              },
+              {
+                "x": "2025-03-20T14:28:41",
+                "y": 0
+              },
+              {
+                "x": "2025-03-21T08:28:40",
+                "y": 2500
+              },
+              {
+                "x": "2025-03-21T09:03:20",
+                "y": 2150
+              },
+              {
+                "x": "2025-03-21T09:06:31",
+                "y": 50
+              },
+              {
+                "x": "2025-03-21T11:19:42",
+                "y": 250
+              },
+              {
+                "x": "2025-03-21T11:20:14",
+                "y": 400
+              },
+              {
+                "x": "2025-03-21T11:21:31",
+                "y": 50
+              },
+              {
+                "x": "2025-03-21T22:13:26",
+                "y": 0
+              },
+              {
+                "x": "2025-03-24T11:17:30",
+                "y": 3000
+              },
+              {
+                "x": "2025-03-24T11:32:15",
+                "y": 0
+              },
+              {
+                "x": "2025-03-26T20:38:18",
+                "y": 1000
+              },
+              {
+                "x": "2025-03-26T22:18:47",
+                "y": 0
+              },
+              {
+                "x": "2025-04-04T05:31:57",
+                "y": 1000
+              },
+              {
+                "x": "2025-04-04T05:33:25",
+                "y": 500
+              },
+              {
+                "x": "2025-04-04T14:47:37",
+                "y": 0
+              },
+              {
+                "x": "2025-04-08T08:05:25",
+                "y": 30000
+              },
+              {
+                "x": "2025-04-08T08:05:30",
+                "y": 29950
+              },
+              {
+                "x": "2025-04-08T08:06:18",
+                "y": 30450
+              },
+              {
+                "x": "2025-04-08T08:06:47",
+                "y": 450
+              },
+              {
+                "x": "2025-04-08T08:08:50",
+                "y": 50450
+              },
+              {
+                "x": "2025-04-08T08:08:56",
+                "y": 50400
+              },
+              {
+                "x": "2025-04-08T08:53:24",
+                "y": 330
+              },
+              {
+                "x": "2025-04-08T17:51:56",
+                "y": 17130
+              },
+              {
+                "x": "2025-04-08T17:52:01",
+                "y": 17080
+              },
+              {
+                "x": "2025-04-08T17:52:34",
+                "y": 280
+              },
+              {
+                "x": "2025-04-08T19:52:53",
+                "y": 1280
+              },
+              {
+                "x": "2025-04-08T19:54:49",
+                "y": 280
+              },
+              {
+                "x": "2025-04-08T22:14:40",
+                "y": 0
+              },
+              {
+                "x": "2025-04-09T19:33:09",
+                "y": 150000
+              },
+              {
+                "x": "2025-04-09T19:33:14",
+                "y": 149950
+              },
+              {
+                "x": "2025-04-09T19:59:27",
+                "y": 18850
+              },
+              {
+                "x": "2025-04-09T20:07:30",
+                "y": 16850
+              },
+              {
+                "x": "2025-04-09T22:14:45",
+                "y": 0
+              },
+              {
+                "x": "2025-04-11T05:11:28",
+                "y": 80100
+              },
+              {
+                "x": "2025-04-11T05:11:34",
+                "y": 80050
+              },
+              {
+                "x": "2025-04-11T05:14:29",
+                "y": 0
+              },
+              {
+                "x": "2025-04-11T09:30:53",
+                "y": 6000
+              },
+              {
+                "x": "2025-04-11T09:43:29",
+                "y": 6500
+              },
+              {
+                "x": "2025-04-11T09:43:50",
+                "y": 350
+              },
+              {
+                "x": "2025-04-11T15:10:07",
+                "y": 0
+              },
+              {
+                "x": "2025-04-13T13:33:16",
+                "y": 10000
+              },
+              {
+                "x": "2025-04-13T13:33:21",
+                "y": 9950
+              },
+              {
+                "x": "2025-04-13T19:14:17",
+                "y": 9850
+              },
+              {
+                "x": "2025-04-13T21:47:04",
+                "y": 9350
+              },
+              {
+                "x": "2025-04-13T22:06:07",
+                "y": 0
+              },
+              {
+                "x": "2025-04-14T16:46:56",
+                "y": 9000
+              },
+              {
+                "x": "2025-04-14T16:48:49",
+                "y": 7970
+              },
+              {
+                "x": "2025-04-14T20:28:16",
+                "y": 4960
+              },
+              {
+                "x": "2025-04-14T22:11:37",
+                "y": 0
+              },
+              {
+                "x": "2025-04-15T08:24:16",
+                "y": 3000
+              },
+              {
+                "x": "2025-04-15T12:18:27",
+                "y": 1980
+              },
+              {
+                "x": "2025-04-15T17:36:10",
+                "y": 0
+              },
+              {
+                "x": "2025-04-15T18:11:04",
+                "y": 5000
+              },
+              {
+                "x": "2025-04-15T18:12:00",
+                "y": 2990
+              },
+              {
+                "x": "2025-04-15T20:19:31",
+                "y": 2190
+              },
+              {
+                "x": "2025-04-15T22:13:00",
+                "y": 0
+              },
+              {
+                "x": "2025-04-17T20:09:48",
+                "y": 1000
+              },
+              {
+                "x": "2025-04-17T20:11:08",
+                "y": 500
+              },
+              {
+                "x": "2025-04-17T20:11:20",
+                "y": 0
+              },
+              {
+                "x": "2025-04-19T08:42:42",
+                "y": 20000
+              },
+              {
+                "x": "2025-04-19T08:42:49",
+                "y": 19950
+              },
+              {
+                "x": "2025-04-19T11:16:12",
+                "y": 18950
+              },
+              {
+                "x": "2025-04-19T14:01:46",
+                "y": 18450
+              },
+              {
+                "x": "2025-04-19T15:12:46",
+                "y": 15450
+              },
+              {
+                "x": "2025-04-19T15:15:34",
+                "y": 10450
+              },
+              {
+                "x": "2025-04-19T17:49:53",
+                "y": 12950
+              },
+              {
+                "x": "2025-04-19T19:45:26",
+                "y": 11950
+              },
+              {
+                "x": "2025-04-19T22:11:42",
+                "y": 0
+              },
+              {
+                "x": "2025-04-23T11:05:53",
+                "y": 2000
+              },
+              {
+                "x": "2025-04-23T11:06:12",
+                "y": 0
+              },
+              {
+                "x": "2025-04-24T08:11:02",
+                "y": 500
+              },
+              {
+                "x": "2025-04-24T08:11:52",
+                "y": 0
+              },
+              {
+                "x": "2025-04-25T18:44:28",
+                "y": 3000
+              },
+              {
+                "x": "2025-04-25T18:44:47",
+                "y": 500
+              },
+              {
+                "x": "2025-04-25T22:14:50",
+                "y": 0
+              },
+              {
+                "x": "2025-04-27T16:54:40",
+                "y": 250
+              },
+              {
+                "x": "2025-04-27T16:54:55",
+                "y": 0
+              },
+              {
+                "x": "2025-05-02T20:57:50",
+                "y": 1000
+              },
+              {
+                "x": "2025-05-02T20:58:35",
+                "y": 0
+              },
+              {
+                "x": "2025-05-07T19:19:09",
+                "y": 1500
+              },
+              {
+                "x": "2025-05-07T19:20:09",
+                "y": 1000
+              },
+              {
+                "x": "2025-05-07T19:27:43",
+                "y": 500
+              },
+              {
+                "x": "2025-05-07T19:28:36",
+                "y": 0
+              },
+              {
+                "x": "2025-05-07T20:05:26",
+                "y": 1000
+              },
+              {
+                "x": "2025-05-07T20:05:54",
+                "y": 0
+              },
+              {
+                "x": "2025-05-10T09:52:25",
+                "y": 5000
+              },
+              {
+                "x": "2025-05-10T22:16:51",
+                "y": 0
+              },
+              {
+                "x": "2025-05-13T08:40:05",
+                "y": 20000
+              },
+              {
+                "x": "2025-05-13T08:40:06",
+                "y": 19950
+              },
+              {
+                "x": "2025-05-13T17:40:05",
+                "y": 18950
+              },
+              {
+                "x": "2025-05-13T18:18:29",
+                "y": 13950
+              },
+              {
+                "x": "2025-05-13T21:23:56",
+                "y": 10950
+              },
+              {
+                "x": "2025-05-13T22:13:26",
+                "y": 0
+              }
+            ],
+            "label": "Wallet Balance (N)"
+          }
+        ]
+      },
+      "title": "Wallet Account Balance Trend over Statement Period",
+      "type": "chart"
+    },
+    {
+      "chart_type": "bar",
+      "data": {
+        "barData": [
+          190568,
+          35500,
+          3750
+        ],
+        "labels": [
+          "IBRAHIM AYODEJI IBRAHIM",
+          "BILIKIS IYABO IBRAHIM",
+          "null"
+        ]
+      },
+      "title": "Total Amount Transferred from Most Frequent Credit Sources",
+      "type": "chart"
+    }
+  ]
+}

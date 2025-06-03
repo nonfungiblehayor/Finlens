@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import MessageProvider from "./context/message";
-import { TransactionProvider } from "./context/transactions";
+import { SummaryProvider } from "./context/summary";
 import ToastProvider from "./context/toast";
 
 const queryClient = new QueryClient();
@@ -15,7 +15,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
     <MessageProvider>
-    <TransactionProvider>
+    <SummaryProvider>
       <ToastProvider />
       <Toaster />
       <Sonner />
@@ -25,7 +25,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-    </TransactionProvider>
+    </SummaryProvider>
       </MessageProvider>
     </TooltipProvider>
   </QueryClientProvider>

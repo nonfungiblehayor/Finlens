@@ -12,6 +12,7 @@ import { useAskData } from '@/utils/ai-model';
 import { ChatSkeleton } from './ui/chatskeleton';
 import { Message } from '@/types';
 import { useMessage } from '@/context/message';
+import { callAfterCopy } from '@/utils/afterCopy';
 
 interface ChatWithStatementProps {
   fileId: string
@@ -62,9 +63,6 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
     handleSendMessage();
   };
   const [isCopy, setCopy] = useState<{id: number, state: boolean}>()
-  function callAfterCopy(fn) {
-    setTimeout(fn, 800)
-  }
   callAfterCopy(() => {
     setCopy(undefined)
   }, )

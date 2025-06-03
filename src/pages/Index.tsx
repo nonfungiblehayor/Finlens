@@ -6,13 +6,41 @@ import TransactionAnalysis from '@/components/TransactionAnalysis';
 import ChatWithStatement from '@/components/ChatWithStatement';
 import DataVisualization from '@/components/DataVisualization';
 import AIAgent from '@/components/AIAgent';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Analysis } from '@/types';
+import { BarChart3, Bot, Brain, MessageSquare } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Index = () => {
   const [showNewUI, setShowNewUI] = useState(false); 
   const [analysis, setAnalysis] = useState<Analysis>()
   const [streamedText, setStreamedText] = useState('')
+  const [activeMode, setActiveMode] = useState<'analysis' | 'visualization' | 'chat' | 'agent'>('analysis');
+    const agentCapabilities = [
+      {
+        icon: <Brain className="h-4 w-4" />,
+        title: "Data Analysis",
+        description: "Deep insights and statistical analysis of your data",
+        mode: 'analysis' as const
+      },
+      {
+        icon: <MessageSquare className="h-4 w-4" />,
+        title: "General Chat",
+        description: "Ask any questions about your data",
+        mode: 'chat' as const
+      },
+      {
+        icon: <BarChart3 className="h-4 w-4" />,
+        title: "Visualization",
+        description: "Create charts, tables, and visual representations",
+        mode: 'visualization' as const
+      },
+      {
+        icon: <Bot className="h-4 w-4" />,
+        title: "AI Agent",
+        description: "Autonomously performs data analysis, generates visualizations, and answers queries about your data",
+        mode: 'agent' as const
+      }
+    ];
   return (
     <Layout>
       {!streamedText ? (
@@ -46,26 +74,53 @@ const Index = () => {
            " <BankStatementAnalysis data={sampleBankStatementData} />"
           ) : (
             <>
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 justify-items-center">
-                  <TabsTrigger value="overview">Data Overview</TabsTrigger>
-                  <TabsTrigger value="chat">Ask Questions</TabsTrigger>
-                  <TabsTrigger value="visuals">Data Visualization</TabsTrigger>
-                  <TabsTrigger value="agent">AI Agent</TabsTrigger>
-                </TabsList>
-                <TabsContent value="overview" className="mt-6">
+              <div className="grid w-full grid-cols-1 md:grid-cols-4 gap-4">
+                  {agentCapabilities.map((capability) => (
+                          <Card 
+                            key={capability.mode}
+                            className={`cursor-pointer transition-all hover:shadow-md ${
+                              activeMode === capability.mode ? 'ring-2 ring-primary' : ''
+                            }`}
+                            onClick={() => setActiveMode(capability.mode)}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex items-start gap-3">
+                                <div className={`p-2 rounded-lg ${
+                                  activeMode === capability.mode ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                                }`}>
+                                  {capability.icon}
+                                </div>
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-sm">{capability.title}</h3>
+                                  <p className="text-xs text-muted-foreground mt-1">
+                                    {capability.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                  ))}
+              </div>
+              {
+                activeMode === "analysis" && (
                   <TransactionAnalysis analysisReport={streamedText} />
-                </TabsContent>
-                <TabsContent value="chat" className="mt-6">
+                )
+              }
+              {
+                activeMode === "chat" && (
                   <ChatWithStatement fileId={analysis?.fileId} />
-                </TabsContent>
-                <TabsContent value="visuals" className="mt-6">
+                )
+              }
+              {
+                activeMode === "visualization" && (
                   <DataVisualization fileId={analysis?.fileId} />
-                </TabsContent>
-                <TabsContent value="agent" className="mt-6">
+                )
+              }
+              {
+                activeMode === "agent" && (
                   <AIAgent fileId={analysis?.fileId} />
-                </TabsContent>
-              </Tabs>
+                )
+              }
             </>
           )}
         </div>
