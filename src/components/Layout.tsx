@@ -30,7 +30,7 @@ const Layout = ({ children, className }: LayoutProps) => {
       <footer className="border-t py-6">
         <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-center text-sm text-muted-foreground md:text-left">
-            © {new Date().getFullYear()} Finlens. Your AI-powered data analyst.
+            © {new Date().getFullYear()} Finlens. Your personal data analyst.
           </p>
           <div className="flex items-center space-x-1">
             <p className="text-sm text-muted-foreground">

@@ -5,11 +5,12 @@ import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from './ui/button';
 import { Loader2, Save } from 'lucide-react';
-import { handleDownload, handleDownloadChart } from '@/utils/savepdf';
+import { handleDownloadChart } from '@/utils/savepdf';
 import type { Chart as ChartJS, } from 'chart.js';
 import LineChart from './ui/visual-chart/line-chart';
 import BarChart from './ui/visual-chart/bar-chart';
 import PieChart from './ui/visual-chart/pie-chart';
+import { callAfterCopy } from '@/utils/afterCopy';
 
 interface VisualizationResultProps {
   type: 'chart' | 'table' | null;
@@ -39,18 +40,21 @@ const components = {
 
 const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
   const containerRef = useRef();
-  const chartRef = useRef<ChartJS<'bar'>>(null);
+  const barchartRef = useRef<ChartJS<'bar'>>(null);
+  const linechartRef = useRef<ChartJS<'line'>>(null)
+  const piechartRef = useRef<ChartJS<'pie'>>(null)
   const [savingState, setSavingState] = useState<boolean>()
-  const handleSavePdf = () => {
-    setSavingState(true)
-    handleDownload(containerRef)
-  }
   const handleSaveChart = () => {
     setSavingState(true)
-    handleDownloadChart(chartRef, data?.title)
-  }
-  function callAfterCopy(fn) {
-    setTimeout(fn, 800)
+    if(data?.chart_type === "bar") {
+      handleDownloadChart(barchartRef, data?.title)
+    } else if(data?.chart_type === "line") {
+      handleDownloadChart(linechartRef, data?.title)
+    } else if(data?.chart_type === "pie") {
+      handleDownloadChart(piechartRef, data?.title)
+    }else {
+      handleDownloadChart(containerRef, "table-analysis")
+    }
   }
   callAfterCopy(() => {
     setSavingState(false)
@@ -69,12 +73,12 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
           </Button>
         </CardHeader>
         <CardContent className='flex items-center justify-center'>
-          {data && data?.chart_type === "bar" && <BarChart title={data?.title} labels={data?.data?.labels} data={data?.data?.barData} />}
+          {data && data?.chart_type === "bar" && <BarChart chartRef={barchartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.barData | data} />}
           {data && data?.chart_type === "pie" && 
-          <PieChart title={data?.title} labels={data?.data?.labels} data={data?.data?.data} borderColors={data?.data?.borderColor} bgColors={data?.data?.backgroundColor}/>
+          <PieChart chartRef={piechartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.data} borderColors={data?.data?.borderColor} bgColors={data?.data?.backgroundColor}/>
           }
         </CardContent>
-        {data && data?.chart_type === "line" && <LineChart title={data?.title} data={data?.data?.datasets} />}
+        {data && data?.chart_type === "line" && <LineChart chartRef={linechartRef} title={data?.title} data={data?.data?.datasets} />}
       </Card>
     );
   } else if (type === 'table') {
@@ -82,7 +86,7 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
       <Card  className='w-full self-center'>
         <CardHeader className='flex flex-row items-center justify-between px-4'>
           <CardTitle>Visualization Result</CardTitle>
-          <Button disabled={savingState} onClick={handleSavePdf}>
+          <Button disabled={savingState} onClick={handleSaveChart}>
             {savingState ? <Loader2 size={10} className="animate-spin"/> :  <div className='flex items-center gap-x-2'>
               Save Result
               <Save size={10}/>
