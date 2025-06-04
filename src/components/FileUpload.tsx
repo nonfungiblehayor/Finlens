@@ -3,6 +3,8 @@ import React, { SetStateAction, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Upload, FileX } from 'lucide-react';
 import { useAnalyzeDoc } from '@/utils/ai-model';
@@ -17,6 +19,7 @@ interface FileUploadProps {
 const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileUploadProps) => {
   const { toast } = useToast()
   const [file, setFile] = useState<File | null>(null);
+  const [objective, setObjective] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -75,6 +78,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
       setIsAnalyzing(false);
     }
   };
+
   return (
     <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
       <CardHeader>
@@ -132,12 +136,26 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
             </>
           )}
         </div>
+        
+        <div className="space-y-2">
+          <Label htmlFor="objective">Analysis Objective</Label>
+          <Textarea
+            id="objective"
+            placeholder="Describe what you want to achieve with this analysis (e.g., identify spending patterns, find sales trends, analyze customer behavior...)"
+            value={objective}
+            onChange={(e) => setObjective(e.target.value)}
+            className="min-h-[80px] resize-none"
+          />
+          <p className="text-xs text-muted-foreground">
+            Help us understand your goals to provide more targeted insights
+          </p>
+        </div>
       </CardContent>
       <CardFooter>
         <Button
           className="w-full"
           onClick={handleUpload}
-          disabled={!file || isUploading || isAnalyzing}
+          disabled={!file || !objective.trim() || isUploading || isAnalyzing}
         >
           {isUploading ? "Uploading..." : 
            isAnalyzing ? "Analyzing..." : 
