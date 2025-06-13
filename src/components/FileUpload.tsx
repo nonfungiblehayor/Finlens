@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Check, Upload, FileX } from 'lucide-react';
 import { useAnalyzeDoc } from '@/utils/ai-model';
 import { Analysis } from '@/types';
+import mixpanel from 'mixpanel-browser';
 
 interface FileUploadProps {
   onAnalysisComplete: React.Dispatch<SetStateAction<Analysis>>
@@ -19,11 +20,14 @@ interface FileUploadProps {
 const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileUploadProps) => {
   const { toast } = useToast()
   const [file, setFile] = useState<File | null>(null);
-  const [objective, setObjective] = useState('');
+  const [fileDetails, setFileDetails] = useState<{objective: string, fileString: string}>()
   const [isUploading, setIsUploading] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    mixpanel.track('upload file', {
+      'upload_file': 'File'
+    })
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.type === 'application/pdf' || 
@@ -35,6 +39,16 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
           selectedFile.name.endsWith('.xlsx') ||
           selectedFile.name.endsWith('.xls')) {
         setFile(selectedFile);
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result
+          if (typeof result === 'string') {
+            const prefixPattern = /^data:[^;]+;base64,/;
+            const base64 = result.replace(prefixPattern, '');
+            setFileDetails((prev) => ({...prev, fileString: base64}))
+          }
+        };
+        reader.readAsDataURL(selectedFile);
       } else {
         toast({
           title: "Invalid file type",
@@ -46,6 +60,9 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   };
 
   const handleUpload = async () => {
+    mixpanel.track('run analysis', {
+      'run-analysis': 'Analysis'
+    })
     if (!file) return;
     setStreamedText('');
     setIsUploading(true);
@@ -58,7 +75,8 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
     try {
       await useAnalyzeDoc(
         file,
-        objective,
+        fileDetails.objective,
+        fileDetails.fileString,
         (chunk) => {
           if (chunk.fileId) {
             onAnalysisComplete((prev) => ({...prev, fileId: chunk.fileId}))
@@ -142,8 +160,8 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
           <Textarea
             id="objective"
             placeholder="Describe what you want to achieve with this analysis (e.g., identify spending patterns, find sales trends, analyze customer behavior...)"
-            value={objective}
-            onChange={(e) => setObjective(e.target.value)}
+            value={fileDetails?.objective}
+            onChange={(e) => setFileDetails((prev) => ({...prev, objective: e.target.value}))}
             className="min-h-[80px] resize-none"
           />
           <p className="text-xs text-muted-foreground">
@@ -155,7 +173,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
         <Button
           className="w-full"
           onClick={handleUpload}
-          disabled={!file || !objective.trim() || isUploading || isAnalyzing}
+          disabled={!file || !fileDetails?.objective?.trim() || isUploading || isAnalyzing}
         >
           {isUploading ? "Uploading..." : 
            isAnalyzing ? "Analyzing..." : 

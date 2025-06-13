@@ -10,6 +10,7 @@ import { useRef, useState } from 'react';
 import { handleDownloadChart } from '@/utils/savepdf';
 import type { Chart as ChartJS, } from 'chart.js';
 import { Button } from './ui/button';
+import mixpanel from 'mixpanel-browser';
 interface VisualizationResultProps {
     type: 'chart' | 'table' | any | null;
     data: any;
@@ -37,13 +38,15 @@ interface VisualizationResultProps {
     ),
   };
 const AgentVisualization = ({ type, data, title, chart_type}: VisualizationResultProps) => {
-  console.log(data)
   const [savingState, setSavingState] = useState<boolean>()
   const containerRef = useRef();
   const barchartRef = useRef<ChartJS<'bar'>>(null);
   const linechartRef = useRef<ChartJS<'line'>>(null)
   const piechartRef = useRef<ChartJS<'pie'>>(null)
     const handleSaveChart = () => {
+      mixpanel.track('use data', {
+        'use_data': 'save chart'
+      })
       setSavingState(true)
       if(chart_type === "bar") {
         handleDownloadChart(barchartRef, title)

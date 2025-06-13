@@ -13,6 +13,7 @@ import { ChatSkeleton } from './ui/chatskeleton';
 import { Message } from '@/types';
 import { useMessage } from '@/context/message';
 import { callAfterCopy } from '@/utils/afterCopy';
+import mixpanel from 'mixpanel-browser';
 
 interface ChatWithStatementProps {
   fileId: string
@@ -43,6 +44,9 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
   };
 
   const handleSendMessage = async (e?: React.FormEvent) => {
+        mixpanel.track('ask question', {
+          'ask_question': 'Question'
+        })
     if (e) e.preventDefault();
     if (!input.trim()) return;
     const userMessage: Message = {
@@ -67,6 +71,9 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
     setCopy(undefined)
   }, )
   const copyMessage = (content: string, id: number) => {
+      mixpanel.track('use data', {
+        'use_data': 'copy response'
+      })    
     navigator.clipboard.writeText(content).then(() => {
       setCopy({id: id, state: true})
     })

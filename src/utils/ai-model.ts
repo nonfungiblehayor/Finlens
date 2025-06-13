@@ -3,11 +3,13 @@ const baseUrl = import.meta.env.VITE_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
     objectives: string,
+    fileBase64: string,
     onMessage: (msg: { fileId?: string; text?: string }) => void,
     onComplete?: (fullText: string) => void): Promise<void> => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append("objectives", objectives)
+    formData.append("fileBase64", fileBase64)
    try {
     const response = await fetch(`${baseUrl}/analyze`, {
         method: "POST",
@@ -106,9 +108,7 @@ export const useAgent = async(file_id: string, objectives: string) => {
       const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
       const dataResult = JSON.parse(cleaned)
       const rawResult = dataResult?.response?.body?.candidates[0]?.content?.parts[0]?.text.replace(/(^```json\s*|\s*```$)/g, '')
-      console.log(rawResult)
       const data = JSON5.parse(rawResult);
-      console.log(data)
       return data
     }
   } catch (error) {

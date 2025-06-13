@@ -13,6 +13,7 @@ import { Copy, RefreshCw } from 'lucide-react';
 import { callAfterCopy } from '@/utils/afterCopy';
 import { Textarea } from './ui/textarea';
 import { components } from './VisualizationResult';
+import mixpanel from 'mixpanel-browser';
 interface AIAgentProps {
   fileId: string;
 }
@@ -24,6 +25,9 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
     const [objective, setObjective] = useState('');
     const [isCopy, setCopy] = useState<boolean>()
     const handleCopy = () => {
+      mixpanel.track('use data', {
+        'use_data': 'copy response'
+      })
       setCopy(true)
       if(containerRef.current) {
       navigator.clipboard.writeText(containerRef.current.textContent)
@@ -33,6 +37,9 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
       setCopy(undefined)
     }, )
   const handleStartAgent = async() => {
+      mixpanel.track('run agent', {
+        'run_agent': 'agent operation'
+      })
     setLoading(true)
     setSummary(undefined)
     await useAgent(fileId, objective).then((response) => {

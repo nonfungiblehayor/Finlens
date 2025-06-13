@@ -11,6 +11,7 @@ import LineChart from './ui/visual-chart/line-chart';
 import BarChart from './ui/visual-chart/bar-chart';
 import PieChart from './ui/visual-chart/pie-chart';
 import { callAfterCopy } from '@/utils/afterCopy';
+import mixpanel from 'mixpanel-browser';
 
 interface VisualizationResultProps {
   type: 'chart' | 'table' | null;
@@ -39,13 +40,15 @@ export const components = {
 };
 
 const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
-  console.log(data)
   const containerRef = useRef();
   const barchartRef = useRef<ChartJS<'bar'>>(null);
   const linechartRef = useRef<ChartJS<'line'>>(null)
   const piechartRef = useRef<ChartJS<'pie'>>(null)
   const [savingState, setSavingState] = useState<boolean>()
   const handleSaveChart = () => {
+      mixpanel.track('use data', {
+        'use_data': 'save chart'
+      })
     setSavingState(true)
     if(data?.chart_type === "bar") {
       handleDownloadChart(barchartRef, data?.title)
