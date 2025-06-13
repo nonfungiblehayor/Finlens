@@ -17,7 +17,7 @@ interface VisualizationResultProps {
   data: any;
 }
 
-const components = {
+export const components = {
   table: ({node, ...props}) => (
     <div className="overflow-x-auto my-4">
       <table className="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg" {...props} />
@@ -39,6 +39,7 @@ const components = {
 };
 
 const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
+  console.log(data)
   const containerRef = useRef();
   const barchartRef = useRef<ChartJS<'bar'>>(null);
   const linechartRef = useRef<ChartJS<'line'>>(null)
@@ -73,7 +74,7 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
           </Button>
         </CardHeader>
         <CardContent className='flex items-center justify-center'>
-          {data && data?.chart_type === "bar" && <BarChart chartRef={barchartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.barData | data} />}
+          {data && data?.chart_type === "bar" && <BarChart chartRef={barchartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.barData} />}
           {data && data?.chart_type === "pie" && 
           <PieChart chartRef={piechartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.data} borderColors={data?.data?.borderColor} bgColors={data?.data?.backgroundColor}/>
           }

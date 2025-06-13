@@ -26,7 +26,6 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      // Check if file is PDF, CSV, or Excel
       if (selectedFile.type === 'application/pdf' || 
           selectedFile.type === 'text/csv' || 
           selectedFile.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
@@ -59,6 +58,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
     try {
       await useAnalyzeDoc(
         file,
+        objective,
         (chunk) => {
           if (chunk.fileId) {
             onAnalysisComplete((prev) => ({...prev, fileId: chunk.fileId}))
@@ -80,7 +80,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto glass-card animate-fade-in">
+    <Card className="w-full max-w-2xl mx-auto glass-card animate-fade-in">
       <CardHeader>
         <CardTitle className="text-center text-2xl">Upload Your Data</CardTitle>
         <CardDescription className="text-center">

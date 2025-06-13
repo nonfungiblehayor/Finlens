@@ -33,7 +33,7 @@ const TransactionAnalysis = ({ analysisReport }: TransactionAnalysisProps) => {
           <div>
             <CardTitle className="flex items-center">
               <CreditCard className="mr-2 h-5 w-5" />
-              Data Analysis
+               Analysis Report 
             </CardTitle>
             <CardDescription>Here’s a detailed overview of your data</CardDescription>
           </div>
