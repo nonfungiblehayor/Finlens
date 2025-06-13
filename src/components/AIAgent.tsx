@@ -1,5 +1,5 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -8,10 +8,12 @@ import { useAgent } from '@/utils/ai-model';
 import { PageSkeleton } from './ui/chatskeleton';
 import { useSummary } from '@/context/summary';
 import AgentVisualization from './agentVisualization';
-import { mockAgentDate } from '@/utils/mockData';
 import { useRef, useState } from 'react';
 import { Copy, RefreshCw } from 'lucide-react';
 import { callAfterCopy } from '@/utils/afterCopy';
+import { Textarea } from './ui/textarea';
+import { components } from './VisualizationResult';
+import mixpanel from 'mixpanel-browser';
 interface AIAgentProps {
   fileId: string;
 }
@@ -20,8 +22,12 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
     const { summary, setSummary } = useSummary()
     const containerRef = useRef<HTMLDivElement>();
     const [isLoading, setLoading] = useState<boolean>()
+    const [objective, setObjective] = useState('');
     const [isCopy, setCopy] = useState<boolean>()
     const handleCopy = () => {
+      mixpanel.track('use data', {
+        'use_data': 'copy response'
+      })
       setCopy(true)
       if(containerRef.current) {
       navigator.clipboard.writeText(containerRef.current.textContent)
@@ -31,9 +37,12 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
       setCopy(undefined)
     }, )
   const handleStartAgent = async() => {
+      mixpanel.track('run agent', {
+        'run_agent': 'agent operation'
+      })
     setLoading(true)
     setSummary(undefined)
-    await useAgent(fileId).then((response) => {
+    await useAgent(fileId, objective).then((response) => {
       setSummary(response)
     }).catch((err) => {
       console.log(err)
@@ -46,7 +55,7 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
       <Card className="h-[600px] overflow-y-scroll flex flex-col">
         <CardHeader>
           <div className="flex items-center justify-between">
-              <CardTitle onClick={() => console.log(summary)} className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                  Finlens Data analysis Agent
               </CardTitle>
               <div className='flex items-center gap-x-2'>
@@ -69,7 +78,19 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
                 Our AI Agent is built to handle the entire data analysis pipeline autonomously, so you can focus on
                 making decisions, not wrangling spreadsheets.
               </div>
-              <Button onClick={handleStartAgent}>Run Analysis</Button>
+                      <div className="space-y-2 w-10/12">
+                        <Textarea
+                          id="objective"
+                          placeholder="Describe what you want to achieve with this analysis (e.g., identify spending patterns, find sales trends, analyze customer behavior...)"
+                          value={objective}
+                          onChange={(e) => setObjective(e.target.value)}
+                          className="min-h-[120px] resize-none"
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          Help us understand your goals to provide more targeted insights
+                        </p>
+                      </div>
+              <Button disabled={!objective} onClick={handleStartAgent}>Run Analysis</Button>
           </Card>
           </CardContent>
         )}
@@ -81,24 +102,40 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
         {
           summary && !isLoading && (
             <CardContent ref={containerRef} className='flex flex-col gap-y-4'>
-                <ReactMarkdown
-                  children={summary.analysis}
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeSanitize]}
-                />
+              <div>
+                <h1 className='font-bold text-xl'>Document Summary</h1>
                 <div>
-                  {summary?.answer_question?.map((data, index) => (
-                      <ReactMarkdown
-                      key={index}
-                      children={data.answer}
+                  {summary?.summary}
+                </div>
+              </div>
+              <div className='space-y-8'>
+                {summary?.objectives.map((objective, index) => (
+                  <div key={index} className='space-y-4'>
+                    <h2 className='font-bold text-xl flex gap-x-[3px]'>
+                      <span>Objective{index + 1}:</span>
+                      {objective?.title}
+                    </h2>
+                    <ReactMarkdown
+                     components={components}
+                      children={objective?.text}
                       remarkPlugins={[remarkGfm]}
                       rehypePlugins={[rehypeSanitize]}
-                    />                    
-                  ))}
-                </div>
-                {summary?.visualization?.map((data, index) => (
-                      <AgentVisualization key={index} title={data?.title} chart_type={data?.chart_type} data={data?.data} type={data?.type} />
-                  ))}
+                    />
+                    {objective?.question.map((question, index) => (
+                       <ReactMarkdown
+                       key={index}
+                       components={components}
+                       children={question}
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeSanitize]}
+                      />
+                    ))}
+                    {objective?.visualization.map((data, index) => (
+                       <AgentVisualization key={index} title={data?.title} chart_type={data?.chart_type} data={data?.data} type={data?.type} />
+                    ))}
+                  </div>
+                ))}
+              </div>
             </CardContent>
            )
         } 

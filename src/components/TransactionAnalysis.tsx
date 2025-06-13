@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
 import { Button } from './ui/button';
 import { useState } from 'react';
+import mixpanel from 'mixpanel-browser';
 
 interface TransactionAnalysisProps {
   analysisReport: string;
@@ -15,6 +16,9 @@ interface TransactionAnalysisProps {
 const TransactionAnalysis = ({ analysisReport }: TransactionAnalysisProps) => {
    const [isCopy, setCopy] = useState(false)
     const handleCopy = () => {
+      mixpanel.track('use data', {
+        'use_data': 'copy response'
+      })  
       navigator.clipboard.writeText(analysisReport).then(() => {
         setCopy(true)
       })
@@ -33,7 +37,7 @@ const TransactionAnalysis = ({ analysisReport }: TransactionAnalysisProps) => {
           <div>
             <CardTitle className="flex items-center">
               <CreditCard className="mr-2 h-5 w-5" />
-              Data Analysis
+               Analysis Report 
             </CardTitle>
             <CardDescription>Here’s a detailed overview of your data</CardDescription>
           </div>

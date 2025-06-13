@@ -11,13 +11,14 @@ import LineChart from './ui/visual-chart/line-chart';
 import BarChart from './ui/visual-chart/bar-chart';
 import PieChart from './ui/visual-chart/pie-chart';
 import { callAfterCopy } from '@/utils/afterCopy';
+import mixpanel from 'mixpanel-browser';
 
 interface VisualizationResultProps {
   type: 'chart' | 'table' | null;
   data: any;
 }
 
-const components = {
+export const components = {
   table: ({node, ...props}) => (
     <div className="overflow-x-auto my-4">
       <table className="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg" {...props} />
@@ -45,6 +46,9 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
   const piechartRef = useRef<ChartJS<'pie'>>(null)
   const [savingState, setSavingState] = useState<boolean>()
   const handleSaveChart = () => {
+      mixpanel.track('use data', {
+        'use_data': 'save chart'
+      })
     setSavingState(true)
     if(data?.chart_type === "bar") {
       handleDownloadChart(barchartRef, data?.title)
@@ -73,7 +77,7 @@ const VisualizationResult = ({ type, data }: VisualizationResultProps) => {
           </Button>
         </CardHeader>
         <CardContent className='flex items-center justify-center'>
-          {data && data?.chart_type === "bar" && <BarChart chartRef={barchartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.barData | data} />}
+          {data && data?.chart_type === "bar" && <BarChart chartRef={barchartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.barData} />}
           {data && data?.chart_type === "pie" && 
           <PieChart chartRef={piechartRef} title={data?.title} labels={data?.data?.labels} data={data?.data?.data} borderColors={data?.data?.borderColor} bgColors={data?.data?.backgroundColor}/>
           }

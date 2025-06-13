@@ -9,9 +9,10 @@ import AIAgent from '@/components/AIAgent';
 import { Analysis } from '@/types';
 import { BarChart3, Bot, Brain, MessageSquare } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useSummary } from '@/context/summary';
 
 const Index = () => {
-  const [showNewUI, setShowNewUI] = useState(false); 
+  const { setSummary } = useSummary()
   const [analysis, setAnalysis] = useState<Analysis>()
   const [streamedText, setStreamedText] = useState('')
   const [activeMode, setActiveMode] = useState<'analysis' | 'visualization' | 'chat' | 'agent'>('analysis');
@@ -41,11 +42,17 @@ const Index = () => {
         mode: 'agent' as const
       }
     ];
+  const uploadNewFile = () => {
+    setAnalysis(undefined)
+    setStreamedText("")
+    setSummary(undefined)
+    setActiveMode('analysis')
+  }
   return (
     <Layout>
       {!streamedText ? (
         <div className="flex flex-col items-center justify-center min-h-[80vh]">
-          <div className="max-w-lg w-full px-4">
+          <div className="max-w-3xl w-full px-4">
             <h1 className="text-3xl font-bold text-center mb-2">Welcome to Finlens</h1>
             <p className="text-center text-muted-foreground mb-10">
               An AI agent for every dataset—get answers, generate visualizations, and drive smarter decisions across all your data.
@@ -63,16 +70,12 @@ const Index = () => {
               </p>
             </div>
             <button
-              onClick={() => setStreamedText("")}
+              onClick={uploadNewFile}
               className="px-4 py-2 bg-primary text-white rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
             >
              Upload a new file
             </button>
           </div>
-          
-          {showNewUI ? (
-           " <BankStatementAnalysis data={sampleBankStatementData} />"
-          ) : (
             <>
               <div className="grid w-full grid-cols-1 md:grid-cols-4 gap-4">
                   {agentCapabilities.map((capability) => (
@@ -122,7 +125,6 @@ const Index = () => {
                 )
               }
             </>
-          )}
         </div>
       )}
     </Layout>

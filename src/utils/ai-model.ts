@@ -1,11 +1,16 @@
-
+import JSON5 from 'json5';
 const baseUrl = import.meta.env.VITE_BASE_URL
+const agenturl = import.meta.env.VITE_AGENT_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
+    objectives: string,
+    fileBase64: string,
     onMessage: (msg: { fileId?: string; text?: string }) => void,
     onComplete?: (fullText: string) => void): Promise<void> => {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append("objectives", objectives)
+    formData.append("fileBase64", fileBase64)
    try {
     const response = await fetch(`${baseUrl}/analyze`, {
         method: "POST",
@@ -86,39 +91,15 @@ export const useVisualizeData = async(file_id: string, prompt: string) => {
     throw new Error(error)
   }
 }
-function sanitizeJsonString(raw) {
-  return raw.replace(
-    // This regex finds every double-quoted JSON string (including existing escapes):
-    /"([^"\\]*(\\.[^"\\]*)*)"/g,
-    (fullMatch) => {
-      // fullMatch includes the surrounding quotes, e.g. "\"some\ntext\""
-      const inner = fullMatch.slice(1, -1); // strip the leading + trailing quote
-
-      // 1) Escape any literal backslash → "\\"  
-      // 2) Escape any literal double-quote → '\"'  
-      // 3) Escape any literal carriage-return → "\r"  
-      // 4) Escape any literal newline  → "\n"  
-      // 5) Escape any literal tab      → "\t"
-      const escapedInner = inner
-        .replace(/\\/g, "\\\\")
-        .replace(/"/g, '\\"')
-        .replace(/\r/g, "\\r")
-        .replace(/\n/g, "\\n")
-        .replace(/\t/g, "\\t");
-
-      return `"${escapedInner}"`;
-    }
-  );
-}
-export const useAgent = async(file_id: string) => {
+export const useAgent = async(file_id: string, objectives: string) => {
   const agentId = "finlensAgent"
   try {
-    const response = await fetch(`http://localhost:4111/api/agents/${agentId}/generate`, {
+    const response = await fetch(`${agenturl}/api/agents/${agentId}/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ role: "user", messages: file_id })
+      body: JSON.stringify({ role: "user", messages: `${file_id} ${objectives}` })
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -128,8 +109,7 @@ export const useAgent = async(file_id: string) => {
       const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
       const dataResult = JSON.parse(cleaned)
       const rawResult = dataResult?.response?.body?.candidates[0]?.content?.parts[0]?.text.replace(/(^```json\s*|\s*```$)/g, '')
-      const cleanedData = rawResult?.replace(/\\(?!(["\\/bfnrt]|u[0-9A-Fa-f]{4}))/g, '')
-      const data = JSON.parse(cleanedData)
+      const data = JSON5.parse(rawResult);
       return data
     }
   } catch (error) {

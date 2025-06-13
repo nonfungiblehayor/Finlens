@@ -16,21 +16,22 @@ export interface messageType {
   setMessage: Dispatch<SetStateAction<Message>>
 }
 export interface dataSummary {
-  analysis: string,
-  answer_question: [
-    {
-      question: string,
-      answer: string
-    }
-  ],
-  visualization: [
-    {
-      chart_type: string,
-      data: any,
-      title: string,
-      type: "chart" | "table"
-    }
-  ]
+    summary: string,
+    objectives: [
+      {
+        title: string,
+        text: string,
+        question: string[],
+        visualization: [
+          {
+            chart_type: string,
+            data: any,
+            title: string,
+            type: "chart" | "table"
+          }
+        ]
+      }
+    ]
 }
 export interface summaryType {
   summary: dataSummary,

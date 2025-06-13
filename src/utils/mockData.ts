@@ -193,473 +193,165 @@ export const agentChart = [{
   type: "chart"
 }]
 export const mockAgentDate = {
-  "analysis": "Based on the provided OPay Account Statement for IBRAHIM AYODEJI IBRAHIM from March 15, 2025, to May 13, 2025, the following key insights were identified:\n\n*   **Account Activity:** The account shows high transaction volume with 102 credit transactions and 109 debit transactions within the ~2-month period.\n*   **Significant Fund Sources:** A major portion of credits comes from individuals like BILIKIS IYABO IBRAHIM and also transactions described as 'Transfer from IBRAHIM, AYODEJI IBRAHIM' and 'Transfer from null' which might represent internal transfers or other credit types.\n*   **Primary Expenditures:** Frequent debits are made for 'Mobile Data' and 'Airtime'. Transfers to specific individuals (e.g., ZHULKIFIL SULEIMAN, KEHINDE IREWAMI OLOKODANA, AKEEM LANRE OLATUNDE) and businesses (e.g., GREENLIGHT PLANET SUN KING NIGERIA LIMITED, sulfam foods, Trendit Media Ltd) are also significant.\n*   **OWealth Integration:** The account actively uses the OWealth feature, with frequent 'OWealth Deposit (AutoSave)' transactions moving funds out of the primary wallet balance into OWealth. The OWealth balance grew significantly during the period, earning small amounts of interest daily.\n*   **Transaction Costs:** An 'Electronic Money Transfer Levy' is applied to many outward transfers.\n*   **Overall Movement:** The total debits (#572,054.00) exceed the total credits (#469,159.66) over the statement period, indicating a net outflow if starting from a zero balance, aligning with the detailed transaction list starting from a #0.00 balance and ending with a non-zero balance.\n*   **Balance Context:** The main summary balances appear inconsistent (#0.00 opening/closing) compared to the detailed transactions, but the 'Current Balance' (#10,373.40) aligns closely with the 'Summary - OWealth Balance' closing figure (#10,373.23), suggesting the detailed transaction list and current balance likely reflect the combined OPay wallet and OWealth activity.",
-  "answer_question": [
-    {
-      "question": "What is the total value of funds transferred to each unique counterparty?",
-      "answer": "Okay, here is the breakdown of the total value of funds transferred *from* the account owner (IBRAHIM AYODEJI IBRAHIM) to each unique counterparty, based on the debit transactions listed in the statement:\n\n**Summary of Funds Transferred To Unique Counterparties:**\n\n*   **Ibrahim Ayodeji Ibrahim** (Transfers to self or internal accounts): ₦140,700.00\n*   **GREENLIGHT PLANET SUN KING NIGERIA LIMITED:** ₦130,140.00\n*   **OWealth Deposit (AutoSave)** (Internal OPay transfers): ₦64,030.00\n*   **AIRTEL-DEAL3072-Ilorin Shop - Sales:** ₦30,000.00\n*   **TV:** ₦16,800.00\n*   **ZHULKIFIL SULEIMAN:** ₦16,020.00\n*   **sulfam foods owned by FARIDOH ABDUL:** ₦10,500.00\n*   **AKEEM LANRE OLATUNDE:** ₦10,250.00\n*   **LAWAL ZAKA:** ₦7,200.00\n*   **Easykolad Multibiz 2:** ₦6,220.00\n*   **Airtime:** ₦5,700.00\n*   **ABDULRASHEED OLUWASEUN TAIWO:** ₦3,000.00\n*   **KEHINDE IREWAMI OLOKODANA:** ₦3,000.00\n*   **Mobile Data:** ₦3,024.00\n*   **OMOKAYODE OLASHEU BABATUNDE:** ₦2,900.00\n*   **MUMMY OPE GENERAL MERCHANT:** ₦2,100.00\n*   **OLUWAKEMI SEUN ADEGBOYE:** ₦2,100.00\n*   **Trendit Media Ltd FLW:** ₦2,050.00\n*   **kolawole samson jimoh:** ₦2,000.00\n*   **ABDULGAFAR TOYIN IBRAHIM:** ₦2,000.00\n*   **ABDULLAHI OLAWALE IBRAHIM:** ₦1,500.00\n*   **FORTUNETECH LIMITED:** ₦1,080.00\n*   **HONGKONG FORTUNETECH LIMITED FLW:** ₦1,600.00\n*   **MUHAMMADTUKUR ATIKU:** ₦1,000.00\n*   **TAIYE IREBAMI OLOKODANA:** ₦1,000.00\n*   **ABDULGAFAR OLUWAFERAMI AYUBA:** ₦1,000.00\n*   **ABUBAKAR ADAMU BALA:** ₦3,000.00\n*   **YUSUF BARAKAT ADEBISI:** ₦5,000.00\n*   **SUNDAY SAMUEL ADEWOLE:** ₦500.00\n*   **TEMITOPE AJOKE OBANAYO:** ₦500.00\n*   **F.I.S MULTI-BIZ VENTURES - FAUSAT BIDEMI ISMAIL SULAIMAN:** ₦600.00\n*   **BABATUNDE AFUSAT BOLA:** ₦400.00\n*   **Electronic Money Transfer Levy:** ₦300.00\n\nPlease note that \"OWealth Deposit (AutoSave)\", \"Mobile Data\", \"Airtime\", and \"Electronic Money Transfer Levy\" are categorised here as counterparties as they represent entities or services to which funds were transferred out of the account, even if they are not traditional personal or business recipients in every case. \"Transfer to Ibrahim Ayodeji Ibrahim\" seems to represent transfers between accounts owned by the same individual."
-    },
-    {
-      "question": "How does the frequency of OWealth deposits compare to other transaction types?",
-      "answer": "Based on the provided account statement:\n\n1.  The only type of OWealth deposit explicitly listed is **\"OWealth Deposit (AutoSave)\"**.\n2.  In the \"Summary - OWealth Balance\" section (where these deposits are recorded as inflows to the OWealth account), there are **5** instances of \"OWealth Deposit (AutoSave)\" listed between March 15, 2025, and May 13, 2025. (March 15, March 26, April 13, April 14, April 15).\n\nComparing this frequency to other transaction types:\n\n*   **OWealth Interest Earned:** These transactions occur almost **daily** in the OWealth Balance summary, making them the *most frequent* type of OWealth transaction and the most frequent transaction overall in this period (counting over 60 instances).\n*   **Transfers (from/to others):** These are also very frequent, appearing multiple times across both the Wallet and OWealth summaries, and are significantly more frequent than OWealth AutoSave deposits.\n*   **Mobile Data & Airtime purchases:** These also appear quite frequently throughout the statement (over 20 instances combined), more often than OWealth AutoSave deposits.\n*   **Electronic Money Transfer Levy:** These appear several times (6 instances), also more frequently than OWealth AutoSave deposits.\n\nIn summary, \"OWealth Deposit (AutoSave)\" occurs relatively infrequently (5 times in the statement period) compared to most other transaction types listed, particularly compared to OWealth Interest Earned, transfers, mobile data, and airtime purchases."
-    },
-    {
-      "question": "What is the total amount spent on Electronic Money Transfer Levy?",
-      "answer": "Based on the document provided, the \"Electronic Money Transfer Levy\" transactions are listed in the main \"Summary - Wallet Balance\" table.\n\nLet's sum the debit amounts for these transactions:\n\n*   Apr 08: -50.00\n*   Apr 08: -50.00\n*   Apr 09: -50.00\n*   Apr 11: -50.00\n*   Apr 13: -50.00\n*   Apr 19: -50.00\n*   May 13: -50.00\n\nTotal Electronic Money Transfer Levy spent = 50 + 50 + 50 + 50 + 50 + 50 + 50 = 350.\n\nThe total amount spent on Electronic Money Transfer Levy is **#350.00**."
-    }
-  ],
-  "visualization": [
-    {
-      "chart_type": "bar",
-      "data": {
-        "barData": [
-          130140,
-          131100,
-          125950,
-          11330,
-          3000
-        ],
-        "labels": [
-          "GREENLIGHT PLANET SUN KING NIGERIA LIMITED",
-          "Transfer to Ibrahim Ayodeji Ibrahim",
-          "OWealth Deposit (AutoSave)",
-          "Transfer to ZHULKIFIL SULEIMAN",
-          "Transfer to ABUBAKAR ADAMU BALA"
-        ]
-      },
-      "title": "Top 5 Debit Transaction Descriptions by Total Amount",
-      "type": "chart"
-    },
-    {
-      "chart_type": "line",
-      "data": {
-        "datasets": [
+    "summary": "This document contains transaction data, where each row represents a single transaction. The data includes a unique transaction identifier, the date of the transaction, the product(s) purchased in that transaction, the total revenue for the transaction, the payment mode used, and the staff member or user associated with the transaction. Transactions can involve single or multiple products.",
+    "objectives": [
+      {
+        "title": "Best Selling Products by Quantity and Revenue",
+        "text": "**Methodology**\n\nTo identify the best-selling products, I will first parse each transaction record. The \'Product(s)\' field often contains multiple products separated by semicolons. I will split this field for each transaction to get a list of individual products associated with that transaction. Due to the structure of the data (transaction revenue is listed as a total for the transaction, not per product item, and explicit quantities per product are not provided), I will treat each mention of a product within a transaction as one \'instance\' sold for quantity analysis. For revenue analysis, I will associate the total transaction revenue with *each* product listed within that transaction. This approach allows us to see which products are frequently part of transactions and which products are associated with high-value transactions, acknowledging the limitation that this isn\'t a true unit quantity or individual product revenue breakdown.\n\nI will aggregate the \'instance count\' (as a proxy for quantity) and the sum of associated transaction revenues for each unique product across all records. Finally, I will sort the products based on these aggregated metrics in descending order to identify the top performers.\n\n**Results**\n\n| Product Name                    | Transaction Count (Proxy for Quantity) | Total Associated Revenue |\n| :------------------------------ | :------------------------------------- | :----------------------- |\n| Coconut milk                    | 9                                      | 14710                    |\n| Detol Soap Small (pcs)          | 8                                      | 2400                     |\n| Bread                           | 4                                      | 23000                    |\n| Golden Penny Noodles (Small)    | 4                                      | 4300                     |\n| Beetroot ~1 kg                  | 2                                      | 6800                     |\n| Chi Chicken Breast ~1 kg - Frozen | 2                                      | 0                        |\n| Arla Mozzarella Cheese ~200 g   | 2                                      | 53194.05                 |\n| Maggi                           | 2                                      | 20                       |\n| New Age Power Bank              | 1                                      | 0                        |\n| Detol Morn Big Size             | 1                                      | 84000                    |\
+  | Novas                           | 1                                      | 2000                     |\n\n**Findings & Interpretations**\n\nBased on this analysis, considering \'quantity\' as the number of transactions a product appeared in and \'revenue\' as the sum of the total revenue of transactions containing that product:\n\n*   **By \'Quantity\' (Transaction Count):** \'Coconut milk\' is the most frequently transacted product, appearing in 9 out of 26 records (approximately 34.6% of transactions). \'Detol Soap Small (pcs)\' is the second most frequent (8 transactions), followed by \'Bread\' and \'Golden Penny Noodles (Small)\' (4 transactions each). This suggests \'Coconut milk\' and \'Detol Soap Small (pcs)\' are popular staple items.\n*   **By Associated Revenue:** \'Detol Morn Big Size\' is associated with the highest total revenue (84000), despite appearing in only one transaction. \'Arla Mozzarella Cheese ~200 g\' is second (53194.05 from 2 transactions), and \'Bread\' is third (23000 from 4 transactions). This indicates that while \'Coconut milk\' is popular by count, \'Detol Morn Big Size\', \'Arla Mozzarella Cheese ~200 g\', and \'Bread\' are involved in much higher-value transactions.\n\n**Important Limitation:** The current data structure does not allow for calculating the exact quantity of each item sold in transactions where multiple items are listed, nor does it provide the individual revenue contribution of each item in a multi-item transaction. The revenue figure provided per record is the total transaction value. Therefore, the \'quantity\' here reflects transaction count (how many transactions a product was in), and \'Total Associated Revenue\' is the sum of total transaction revenues for records containing that product. This overstates the revenue directly attributable *to* that specific product, especially for items frequently bundled with expensive items. For example, \'Chi Chicken Breast ~1 kg - Frozen\' and \'New Age Power Bank\' appear in transactions with revenue 0, likely because they were bundled with other items whose revenue is listed. To get a true picture of best sellers by unit quantity and individual revenue, the data would need to be structured differently, perhaps with each row representing a single product item line within a transaction, including its specific quantity and price.\n\nGiven this limitation, the current findings indicate product popularity in terms of transactional frequency and association with transaction value, rather than true sales volume and direct revenue contribution per product unit.",
+        "visualization": [
           {
-            "data": [
-              {
-                "x": "2025-03-15T00:00:00",
-                "y": 0
-              },
-              {
-                "x": "2025-03-15T11:59:22",
-                "y": 3000
-              },
-              {
-                "x": "2025-03-15T16:16:41",
-                "y": 900
-              },
-              {
-                "x": "2025-03-15T22:18:13",
-                "y": 0
-              },
-              {
-                "x": "2025-03-18T15:16:03",
-                "y": 68
-              },
-              {
-                "x": "2025-03-18T15:16:16",
-                "y": 0
-              },
-              {
-                "x": "2025-03-20T12:50:10",
-                "y": 3000
-              },
-              {
-                "x": "2025-03-20T14:28:41",
-                "y": 0
-              },
-              {
-                "x": "2025-03-21T08:28:40",
-                "y": 2500
-              },
-              {
-                "x": "2025-03-21T09:03:20",
-                "y": 2150
-              },
-              {
-                "x": "2025-03-21T09:06:31",
-                "y": 50
-              },
-              {
-                "x": "2025-03-21T11:19:42",
-                "y": 250
-              },
-              {
-                "x": "2025-03-21T11:20:14",
-                "y": 400
-              },
-              {
-                "x": "2025-03-21T11:21:31",
-                "y": 50
-              },
-              {
-                "x": "2025-03-21T22:13:26",
-                "y": 0
-              },
-              {
-                "x": "2025-03-24T11:17:30",
-                "y": 3000
-              },
-              {
-                "x": "2025-03-24T11:32:15",
-                "y": 0
-              },
-              {
-                "x": "2025-03-26T20:38:18",
-                "y": 1000
-              },
-              {
-                "x": "2025-03-26T22:18:47",
-                "y": 0
-              },
-              {
-                "x": "2025-04-04T05:31:57",
-                "y": 1000
-              },
-              {
-                "x": "2025-04-04T05:33:25",
-                "y": 500
-              },
-              {
-                "x": "2025-04-04T14:47:37",
-                "y": 0
-              },
-              {
-                "x": "2025-04-08T08:05:25",
-                "y": 30000
-              },
-              {
-                "x": "2025-04-08T08:05:30",
-                "y": 29950
-              },
-              {
-                "x": "2025-04-08T08:06:18",
-                "y": 30450
-              },
-              {
-                "x": "2025-04-08T08:06:47",
-                "y": 450
-              },
-              {
-                "x": "2025-04-08T08:08:50",
-                "y": 50450
-              },
-              {
-                "x": "2025-04-08T08:08:56",
-                "y": 50400
-              },
-              {
-                "x": "2025-04-08T08:53:24",
-                "y": 330
-              },
-              {
-                "x": "2025-04-08T17:51:56",
-                "y": 17130
-              },
-              {
-                "x": "2025-04-08T17:52:01",
-                "y": 17080
-              },
-              {
-                "x": "2025-04-08T17:52:34",
-                "y": 280
-              },
-              {
-                "x": "2025-04-08T19:52:53",
-                "y": 1280
-              },
-              {
-                "x": "2025-04-08T19:54:49",
-                "y": 280
-              },
-              {
-                "x": "2025-04-08T22:14:40",
-                "y": 0
-              },
-              {
-                "x": "2025-04-09T19:33:09",
-                "y": 150000
-              },
-              {
-                "x": "2025-04-09T19:33:14",
-                "y": 149950
-              },
-              {
-                "x": "2025-04-09T19:59:27",
-                "y": 18850
-              },
-              {
-                "x": "2025-04-09T20:07:30",
-                "y": 16850
-              },
-              {
-                "x": "2025-04-09T22:14:45",
-                "y": 0
-              },
-              {
-                "x": "2025-04-11T05:11:28",
-                "y": 80100
-              },
-              {
-                "x": "2025-04-11T05:11:34",
-                "y": 80050
-              },
-              {
-                "x": "2025-04-11T05:14:29",
-                "y": 0
-              },
-              {
-                "x": "2025-04-11T09:30:53",
-                "y": 6000
-              },
-              {
-                "x": "2025-04-11T09:43:29",
-                "y": 6500
-              },
-              {
-                "x": "2025-04-11T09:43:50",
-                "y": 350
-              },
-              {
-                "x": "2025-04-11T15:10:07",
-                "y": 0
-              },
-              {
-                "x": "2025-04-13T13:33:16",
-                "y": 10000
-              },
-              {
-                "x": "2025-04-13T13:33:21",
-                "y": 9950
-              },
-              {
-                "x": "2025-04-13T19:14:17",
-                "y": 9850
-              },
-              {
-                "x": "2025-04-13T21:47:04",
-                "y": 9350
-              },
-              {
-                "x": "2025-04-13T22:06:07",
-                "y": 0
-              },
-              {
-                "x": "2025-04-14T16:46:56",
-                "y": 9000
-              },
-              {
-                "x": "2025-04-14T16:48:49",
-                "y": 7970
-              },
-              {
-                "x": "2025-04-14T20:28:16",
-                "y": 4960
-              },
-              {
-                "x": "2025-04-14T22:11:37",
-                "y": 0
-              },
-              {
-                "x": "2025-04-15T08:24:16",
-                "y": 3000
-              },
-              {
-                "x": "2025-04-15T12:18:27",
-                "y": 1980
-              },
-              {
-                "x": "2025-04-15T17:36:10",
-                "y": 0
-              },
-              {
-                "x": "2025-04-15T18:11:04",
-                "y": 5000
-              },
-              {
-                "x": "2025-04-15T18:12:00",
-                "y": 2990
-              },
-              {
-                "x": "2025-04-15T20:19:31",
-                "y": 2190
-              },
-              {
-                "x": "2025-04-15T22:13:00",
-                "y": 0
-              },
-              {
-                "x": "2025-04-17T20:09:48",
-                "y": 1000
-              },
-              {
-                "x": "2025-04-17T20:11:08",
-                "y": 500
-              },
-              {
-                "x": "2025-04-17T20:11:20",
-                "y": 0
-              },
-              {
-                "x": "2025-04-19T08:42:42",
-                "y": 20000
-              },
-              {
-                "x": "2025-04-19T08:42:49",
-                "y": 19950
-              },
-              {
-                "x": "2025-04-19T11:16:12",
-                "y": 18950
-              },
-              {
-                "x": "2025-04-19T14:01:46",
-                "y": 18450
-              },
-              {
-                "x": "2025-04-19T15:12:46",
-                "y": 15450
-              },
-              {
-                "x": "2025-04-19T15:15:34",
-                "y": 10450
-              },
-              {
-                "x": "2025-04-19T17:49:53",
-                "y": 12950
-              },
-              {
-                "x": "2025-04-19T19:45:26",
-                "y": 11950
-              },
-              {
-                "x": "2025-04-19T22:11:42",
-                "y": 0
-              },
-              {
-                "x": "2025-04-23T11:05:53",
-                "y": 2000
-              },
-              {
-                "x": "2025-04-23T11:06:12",
-                "y": 0
-              },
-              {
-                "x": "2025-04-24T08:11:02",
-                "y": 500
-              },
-              {
-                "x": "2025-04-24T08:11:52",
-                "y": 0
-              },
-              {
-                "x": "2025-04-25T18:44:28",
-                "y": 3000
-              },
-              {
-                "x": "2025-04-25T18:44:47",
-                "y": 500
-              },
-              {
-                "x": "2025-04-25T22:14:50",
-                "y": 0
-              },
-              {
-                "x": "2025-04-27T16:54:40",
-                "y": 250
-              },
-              {
-                "x": "2025-04-27T16:54:55",
-                "y": 0
-              },
-              {
-                "x": "2025-05-02T20:57:50",
-                "y": 1000
-              },
-              {
-                "x": "2025-05-02T20:58:35",
-                "y": 0
-              },
-              {
-                "x": "2025-05-07T19:19:09",
-                "y": 1500
-              },
-              {
-                "x": "2025-05-07T19:20:09",
-                "y": 1000
-              },
-              {
-                "x": "2025-05-07T19:27:43",
-                "y": 500
-              },
-              {
-                "x": "2025-05-07T19:28:36",
-                "y": 0
-              },
-              {
-                "x": "2025-05-07T20:05:26",
-                "y": 1000
-              },
-              {
-                "x": "2025-05-07T20:05:54",
-                "y": 0
-              },
-              {
-                "x": "2025-05-10T09:52:25",
-                "y": 5000
-              },
-              {
-                "x": "2025-05-10T22:16:51",
-                "y": 0
-              },
-              {
-                "x": "2025-05-13T08:40:05",
-                "y": 20000
-              },
-              {
-                "x": "2025-05-13T08:40:06",
-                "y": 19950
-              },
-              {
-                "x": "2025-05-13T17:40:05",
-                "y": 18950
-              },
-              {
-                "x": "2025-05-13T18:18:29",
-                "y": 13950
-              },
-              {
-                "x": "2025-05-13T21:23:56",
-                "y": 10950
-              },
-              {
-                "x": "2025-05-13T22:13:26",
-                "y": 0
-              }
-            ],
-            "label": "Wallet Balance (N)"
+            "chart_type": "bar",
+            "data": {
+              "barData": [
+                9,
+                7,
+                5,
+                4,
+                2
+              ],
+              "labels": [
+                "Coconut milk",
+                "Detol Soap Small (pcs)",
+                "Bread",
+                "Golden Penny Noodles (Small)",
+                "Beetroot ~1 kg"
+              ]
+            },
+            "title": "Top 5 Products by Transaction Count",
+            "type": "chart"
+          },
+          {
+            "chart_type": "bar",
+            "data": {
+              "barData": [
+                84000,
+                53194.05,
+                25300,
+                14410,
+                5300
+              ],
+              "labels": [
+                "Golden Morn Big Size",
+                "Arla Mozzarella Cheese ~200 g",
+                "Bread",
+                "Coconut milk",
+                "Golden Penny Noodles (Small)"
+              ]
+            },
+            "title": "Top 5 Products by Total Associated Revenue",
+            "type": "chart"
           }
-        ]
-      },
-      "title": "Wallet Account Balance Trend over Statement Period",
-      "type": "chart"
-    },
-    {
-      "chart_type": "bar",
-      "data": {
-        "barData": [
-          190568,
-          35500,
-          3750
         ],
-        "labels": [
-          "IBRAHIM AYODEJI IBRAHIM",
-          "BILIKIS IYABO IBRAHIM",
-          "null"
+        "question": [
+          "Based on the data provided, I have identified the transactions that include multiple products:\n\n1.  **2025-05-02:** Beetroot ~1 kg; Chi Chicken Breast ~1 kg - Frozen\n2.  **2025-04-18:** Chi Chicken Breast ~1 kg - Frozen; Coconut milk\n3.  **2025-04-03:** Bread; Coconut milk\n4.  **2025-02-16:** Maggi; Coconut milk ; New Age Power Bank\n5.  **2025-02-14:** Detol Soap Small (pcs); Golden Morn Big Size\n\nAnalyzing these multi-product transactions, I found the following combinations:\n\n*   Beetroot & Chi Chicken Breast (appears 1 time)\n*   Chi Chicken Breast & Coconut milk (appears 1 time)\n*   Bread & Coconut milk (appears 1 time)\n*   Maggi & Coconut milk & New Age Power Bank (appears 1 time)\n*   Detol Soap Small & Golden Morn Big Size (appears 1 time)\n\nBased on this specific set of transactions, there is **no clear pattern** of products being *frequently* purchased together. Each multi-product combination observed occurs only once in this dataset. A larger dataset would be needed to identify statistically significant product bundling patterns.",
+          "Okay, let\'s analyze the provided transaction data to understand the average revenue generated.\n\nBased on the data format, each line represents a single transaction with a total price for that transaction. Products are listed, separated by semicolons (`;`) if multiple items are part of the same transaction (a bundle).\n\nTo answer your question, I will perform the following steps:\n1.  Identify transactions containing only one item (individual sales).\n2.  Identify transactions containing multiple items (bundled sales).\n3.  Calculate the average *transaction* price for individual sales.\n4.  Calculate the average *transaction* price for bundled sales.\n\n**Important Limitation:** The price listed is for the entire transaction, not for individual items within a bundle. Therefore, I can only calculate the average *transaction* price in each category, not the average revenue *per item* when items are bundled.\n\n**Analysis:**\n\nLet\'s categorize the transactions and extract their prices:\n\n**Individual Sales (1 item):**\n*   Bread | 2000\n*   Bread | 2000\n*   Golden Penny Noodles (Small) | 1400\n*   Arla Mozzarella Cheese ~200 g | 36855\n*   Arla Mozzarella Cheese ~200 g | 16339.05\n*   Beetroot ~1 kg | 3400\n*   Bread | 10000\n*   Coconut milk | 1410\n*   Golden Morn Big Size | 84000\n*   Detol Soap Small (pcs) | 1000\n*   Coconut milk | 940\n*   Golden Penny Noodles (Small) | 1750\n*   Golden Penny Noodles (Small) | 1750\n*   Coconut milk | 1880\n*   Coconut milk | 1880\n*   Coconut milk | 5000\n*   Novas | 2000\n*   Bread | 9000\n*   Maggi | 20\n*   Coconut milk | 500\n*   Coconut milk | 500\n*   Golden Penny Noodles (Small) | 400\n*   Detol Soap Small (pcs) | 200\n*   Detol Soap Small (pcs) | 200\n*   Detol Soap Small (pcs) | 200\n*   Detol Soap Small (pcs) | 200\n*   Detol Soap Small (pcs) | 400\n\nTotal number of Individual Transactions with Price: 27\nSum of Individual Transaction Prices: 2000 + 2000 + 1400 + 36855 + 16339.05 + 3400 + 10000 + 1410 + 84000 + 1000 + 940 + 1750 + 1750 + 1880 + 1880 + 5000 + 2000 + 9000 + 20 + 500 + 500 + 400 + 200 + 200 + 200 + 200 + 400 = **183269.05**\n\nAverage Transaction Price for Individual Sales: 183269.05 / 27 = **6787.74** (approximately)\n\n**Bundled Sales (Multiple items separated by `;`):**\n*   Beetroot ~1 kg; Chi Chicken Breast ~1 kg - Fre | **Price Missing**\n*   Chi Chicken Breast ~1 kg - Frozen; Coconut m | **Price Missing**\n*   Bread; Coconut milk | 2300\n*   Maggi; Coconut milk ; New Age Power Bank ( | **Price Missing**\n*   Detol Soap Small (pcs); Golden Morn Big Size | **Price Missing**\n\nTotal number of Bundled Transactions: 5\nNumber of Bundled Transactions with Price: 1\nSum of Bundled Transaction Prices (only one available): 2300\n\nAverage Transaction Price for Bundled Sales (based on the only transaction with price): 2300 / 1 = **2300**\n\n**Summary:**\n\n*   **Average Transaction Price for Individual Sales:** Approximately **6787.74**\n*   **Average Transaction Price for Bundled Sales:** Based on the single bundled transaction with a price, it is **2300**.\n\n**Conclusion:**\n\nBased on the provided data, the average transaction price for individual sales (**6787.74**) appears significantly higher than the average transaction price for bundled sales (**2300**), although the average for bundled sales is skewed as only one transaction had a price listed.\n\nIt is important to reiterate that this comparison is based on the *total price of the transaction*, not the average revenue *per item*, as the data does not provide individual item prices within bundled transactions."
         ]
       },
-      "title": "Total Amount Transferred from Most Frequent Credit Sources",
-      "type": "chart"
-    }
-  ]
-}
+      {
+        "title": "Average Transaction Value Trend Over Time",
+        "text": "**Methodology**\n\nTo calculate the average transaction value, I will sum the \'Revenue\' for all transactions and divide by the total number of transactions. To analyze the trend over time, I will first ensure the \'Date\' column is in a proper date format. I will then group the transactions by their date and calculate the average transaction revenue for each date. Plotting this daily average transaction value against the date will reveal any temporal trends or fluctuations in the average value of sales.\n\n**Results**\n\nOverall Average Transaction Value: 7,367.46\n\nAverage Transaction Value per Date:\n\n| Date       | Average Transaction Value |\n| :--------- | :------------------------ |\n| 2025-05-09 | 2000.00                   |\n| 2025-05-08 | 2000.00                   |\n| 2025-05-02 | 0.00                      |\n| 2025-04-22 | 18198.02                  |\n| 2025-04-18 | 0.00                      |\n| 2025-04-03 | 2300.00                   |\n| 2025-03-14 | 3400.00                   |\n| 2025-03-07 | 10000.00                  |\n| 2025-02-21 | 1410.00                   |\n| 2025-02-20 | 84000.00                  |\n| 2025-02-19 | 1634.29                   |\n| 2025-02-16 | 0.00                      |\n| 2025-02-14 | 4333.00                   |\n| 2025-02-09 | 20.00                     |\n| 2025-01-29 | 314.29                    |\n\n**Findings & Interpretations**\n\nThe overall average transaction value across the analyzed period is 7,367.46. Looking at the average transaction value per date reveals significant variability. There are some dates with a high average transaction value (e.g., 2025-02-20 at 84000.00, 2025-04-22 at 18198.02, 2025-03-07 at 10000.00), driven by one or more high-value transactions on those days. Conversely, there are dates with very low or zero average values (e.g., 2025-05-02, 2025-04-18, 2025-02-16 at 0.00, 2025-02-09 at 20.00, 2025-01-29 at 314.29). The presence of zero-revenue transactions warrants investigation; these might represent bundled items whose revenue was attributed elsewhere, exchanges, or data entry errors. The trend over time is highly volatile with no clear consistent upward or downward pattern in the daily average value across the observed dates, likely influenced heavily by infrequent large transactions. To smooth this volatility and potentially see a trend, analyzing the average transaction value over longer periods (e.g., weekly or monthly) would be beneficial, but the dataset doesn\'t contain enough dates for this level of aggregation.\n\nData quality issue: The presence of transactions with 0 revenue impacts the average transaction value calculation and warrants investigation to understand the nature of these records.",
+        "visualization": [
+          {
+            "chart_type": "line",
+            "data": {
+              "datasets": [
+                {
+                  "data": [
+                    {
+                      "x": "2025-01-29",
+                      "y": 300
+                    },
+                    {
+                      "x": "2025-02-09",
+                      "y": 20
+                    },
+                    {
+                      "x": "2025-02-14",
+                      "y": 5500
+                    },
+                    {
+                      "x": "2025-02-19",
+                      "y": 2028.57
+                    },
+                    {
+                      "x": "2025-02-20",
+                      "y": 84000
+                    },
+                    {
+                      "x": "2025-02-21",
+                      "y": 1410
+                    },
+                    {
+                      "x": "2025-03-07",
+                      "y": 10000
+                    },
+                    {
+                      "x": "2025-03-14",
+                      "y": 3400
+                    },
+                    {
+                      "x": "2025-04-03",
+                      "y": 2300
+                    },
+                    {
+                      "x": "2025-04-22",
+                      "y": 18198.02
+                    },
+                    {
+                      "x": "2025-05-08",
+                      "y": 2000
+                    },
+                    {
+                      "x": "2025-05-09",
+                      "y": 2000
+                    }
+                  ],
+                  "labels": "Average Value"
+                }
+              ]
+            },
+            "title": "Average Transaction Value per Date",
+            "type": "chart"
+          }
+        ],
+        "question": [
+          "Based on the document provided, there are no transactions explicitly listed with a revenue amount of \"0\".\n\nHowever, there are a few transactions where the amount appears to be missing or unreadable by the OCR:\n\n*   The transaction on `2025-05-02` listing \"Beetroot ~1 kg; Chi Chicken Breast ~1 kg - Frozen\" seems to have no amount listed.\n*   The transaction on `2025-04-18` listing \"Chi Chicken Breast ~1 kg - Frozen; Coconut milk\" also seems to have no amount listed.\n*   The transaction on `2025-02-16` listing \"Maggi; Coconut milk ; New Age Power Bank (\" has no amount listed.\n*   The transaction on `2025-02-14` listing \"Detol Soap Small (pcs); Golden Morn Big Size\" has no amount listed.\n\n**Regarding transactions with 0 revenue (hypothetically, if they were present) and their effect on sales metrics:**\n\nIf transactions *did* have an explicit 0 revenue recorded:\n\n1.  **Reason for 0 Revenue:** This could indicate various scenarios not representing a standard sale with monetary income, such as:\n    *   Returns or exchanges (where the net value is zero).\n    *   Promotional items, free samples, or loyalty rewards redemptions.\n    *   Voided transactions or data entry errors.\n    *   Internal transfers or non-sales activities logged as transactions.\n\n2.  **Effect on Sales Metrics:**\n    *   **Total Revenue:** Transactions with 0 revenue would not add to the total revenue sum.\n    *   **Average Transaction Value:** Including these transactions would *lower* the average transaction value, as they increase the number of transactions but not the total revenue.\n    *   **Transaction Count:** They *would* increase the total count of transactions.\n    *   **Product Sales Metrics:** If the product is listed, it might still be counted as \"sold\" (or given away/returned) in product-specific reports, but without contributing to revenue for that product line.\n\n**Regarding the transactions with missing revenue in this specific document:**\n\nSince the revenue amount is missing rather than explicitly zero, these lines cannot be accurately included in any calculation involving revenue (like total revenue, average transaction value for *all* transactions). They contribute to the total *count* of lines/records but represent incomplete data for sales analysis.",
+          "Okay, let\'s analyze the transaction data by grouping it by month to see if there\'s a noticeable trend in the average transaction value.\n\nFirst, I\'ll extract the date and the transaction value for each entry that has a complete value:\n\n*   2025-05-09 | 2000\n*   2025-05-08 | 2000\n*   2025-04-22 | 1400\n*   2025-04-22 | 36855\n*   2025-04-22 | 16339.05\n*   2025-04-03 | 2300\n*   2025-03-14 | 3400\n*   2025-03-07 | 10000\n*   2025-02-21 | 1410\n*   2025-02-20 | 84000\n*   2025-02-19 | 1000\n*   2025-02-19 | 940\n*   2025-02-19 | 1750\n*   2025-02-19 | 1750\n*   2025-02-19 | 1880\n*   2025-02-19 | 1880\n*   2025-02-19 | 5000\n*   2025-02-14 | 2000\n*   2025-02-14 | 9000\n*   2025-02-09 | 20\n*   2025-01-29 | 500\n*   2025-01-29 | 500\n*   2025-01-29 | 400\n*   2025-01-29 | 200\n*   2025-01-29 | 200\n*   2025-01-29 | 200\n*   2025-01-29 | 200\n*   2025-01-29 | 400\n\nNote: Some lines towards the end of the OCR seem cut off and are missing the value, payment method, and user. These incomplete entries have been excluded from the calculation of average transaction value as their value is unknown.\n\nNow, let\'s group by month and calculate the average transaction value:\n\n*   **January 2025 (2025-01):**\n    *   Transactions: 8\n    *   Total Value: 500 + 500 + 400 + 200 + 200 + 200 + 200 + 400 = 2400\n    *   Average Value: 2400 / 8 = **300**\n\n*   **February 2025 (2025-02):**\n    *   Transactions: 12\n    *   Total Value: 1410 + 84000 + 1000 + 940 + 1750 + 1750 + 1880 + 1880 + 5000 + 2000 + 9000 + 20 = 100630\n    *   Average Value: 100630 / 12 = **8385.83** (approx)\n\n*   **March 2025 (2025-03):**\n    *   Transactions: 2\n    *   Total Value: 3400 + 10000 = 13400\n    *   Average Value: 13400 / 2 = **6700**\n\n*   **April 2025 (2025-04):**\n    *   Transactions: 4\n    *   Total Value: 1400 + 36855 + 16339.05 + 2300 = 56894.05\n    *   Average Value: 56894.05 / 4 = **14223.51** (approx)\n\n*   **May 2025 (2025-05):**\n    *   Transactions: 2\n    *   Total Value: 2000 + 2000 = 4000\n    *   Average Value: 4000 / 2 = **2000**\n\n**Summary of Average Transaction Value by Month:**\n\n*   January 2025: 300\n*   February 2025: 8385.83\n*   March 2025: 6700\n*   April 2025: 14223.51\n*   May 2025: 2000\n\n**Analysis:**\n\nBased on this data, there is **not a clear, consistent trend** (either upward or downward) in the average transaction value when aggregated by month.\n\n*   The average value jumped significantly from January to February.\n*   It decreased slightly from February to March.\n*   It increased substantially from March to April.\n*   It dropped dramatically from April to May.\n\nThe fluctuation seems to be heavily influenced by individual large transactions within certain months (e.g., the 84000 transaction in February and the 36855 and 16339.05 transactions in April). The months with fewer transactions (March and May) also show averages lower than the peak months.\n\nTherefore, while there is significant month-to-month variation, there isn\'t a noticeable *trend* across this short period based on the provided data."
+        ]
+      },
+      {
+        "title": "Percentage Difference Between Payment Modes",
+        "text": "**Methodology**\n\nTo determine the distribution of payment modes, I will count the occurrences of each unique value in the \'Payment Mode\' column. I will then calculate the total number of transactions. For each payment mode, I will divide its count by the total transaction count and multiply by 100 to get the percentage share of transactions for that mode. This will show the popularity of each payment method.\n\n**Results**\n\n| Payment Mode  | Transaction Count | Percentage Share (%) |\n| :------------ | :---------------- | :------------------- |\n| cash          | 8                 | 30.77                |\n| credit        | 7                 | 26.92                |\n| POS           | 7                 | 26.92                |\n| bank_transfer | 4                 | 15.38                |\n| Unknown       | 0                 | 0.00                 |\n\n**Findings & Interpretations**\n\nThe analysis of payment modes shows that \'cash\' is the most frequently used payment method, accounting for just over 30% of transactions. \'credit\' and \'POS\' are equally popular, each making up approximately 26.9% of transactions. \'bank_transfer\' is the least frequent mode among the ones recorded, representing about 15.4% of transactions. There were no transactions with an \'Unknown\' payment mode based on the provided data.\n\nThe distribution is relatively balanced across cash, credit, and POS, suggesting customers utilize a variety of methods. The slightly higher share of cash transactions might indicate a preference for traditional payment or could be influenced by the types of products typically purchased using cash. Understanding the transaction value associated with each payment mode would provide deeper insight (e.g., are high-value transactions more likely to use credit/bank transfer?).\n\nActionable Insight: Monitor the costs associated with different payment modes (e.g., transaction fees for credit/POS/bank transfers vs. handling costs for cash) to optimize payment processing strategies.",
+        "visualization": [
+          {
+            "chart_type": "pie",
+            "data": {
+              "backgroundColor": [
+                "#1f77b4",
+                "#aec7e8",
+                "#ff7f0e",
+                "#ffbb78"
+              ],
+              "borderColor": "#ffffff",
+              "data": [
+                7,
+                6,
+                4,
+                8
+              ],
+              "labels": [
+                "POS",
+                "credit",
+                "bank_transfer",
+                "cash"
+              ]
+            },
+            "title": "Distribution of Payment Modes",
+            "type": "chart"
+          }
+        ],
+        "question": []
+      }
+    ]
+  }

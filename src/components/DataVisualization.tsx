@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import VisualizationResult from './VisualizationResult';
 import { PageSkeleton } from './ui/chatskeleton';
 import { chartType } from '@/types';
+import mixpanel from 'mixpanel-browser';
 
 interface requiredProps {
   fileId: string
@@ -18,10 +19,12 @@ const DataVisualization = ({ fileId }: requiredProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [visualizationResult, setVisualizationResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
   const generateVisualization = async () => {
+        mixpanel.track('visualize data', {
+          'visualize_data': 'Visualization'
+        })
     if (!visualizationPrompt.trim()) return;
     setIsGenerating(true)
     useVisualizeData(fileId, visualizationPrompt).then((res) => {
-      console.log(res)
       setVisualizationResult({data: res, type: res?.type})
     }).catch((error) => {
       console.log(error)

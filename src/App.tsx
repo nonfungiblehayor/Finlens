@@ -9,10 +9,15 @@ import NotFound from "./pages/NotFound";
 import MessageProvider from "./context/message";
 import { SummaryProvider } from "./context/summary";
 import ToastProvider from "./context/toast";
+import { useEffect } from "react";
+import { initMixpanel } from "./utils/mixpanel";
 
 const queryClient = new QueryClient();
 
 function App() {
+  useEffect(() => {
+    initMixpanel()
+  }, [])
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
