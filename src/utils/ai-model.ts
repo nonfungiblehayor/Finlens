@@ -1,5 +1,6 @@
 import JSON5 from 'json5';
 const baseUrl = import.meta.env.VITE_BASE_URL
+const agenturl = import.meta.env.VITE_AGENT_BASE_URL
 export const useAnalyzeDoc = async(
     file: File,
     objectives: string,
@@ -93,7 +94,7 @@ export const useVisualizeData = async(file_id: string, prompt: string) => {
 export const useAgent = async(file_id: string, objectives: string) => {
   const agentId = "finlensAgent"
   try {
-    const response = await fetch(`http://localhost:4111/api/agents/${agentId}/generate`, {
+    const response = await fetch(`${agenturl}/api/agents/${agentId}/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
