@@ -14,6 +14,7 @@ import { Message } from '@/types';
 import { useMessage } from '@/context/message';
 import { callAfterCopy } from '@/utils/afterCopy';
 import mixpanel from 'mixpanel-browser';
+import toast from 'react-hot-toast';
 
 interface ChatWithStatementProps {
   fileId: string
@@ -24,7 +25,6 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
 
   // Sample questions for general data analysis
   const sampleQuestions = [
@@ -90,10 +90,11 @@ const ChatWithStatement = ({ fileId }: ChatWithStatementProps) => {
       };
       setMessage(aiMessage); 
     } catch (error) {
-      toast({
-        title: "An Error occured",
-        description: error,
-      });
+      let errMsg = String(error)
+      if (errMsg.startsWith("Error: ")) {
+        errMsg = errMsg.replace(/^Error:\s*/, "");
+      }
+      toast.error(errMsg)
     }
   };
 

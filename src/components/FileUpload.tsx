@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import toast from 'react-hot-toast';
 import { Check, Upload, FileX } from 'lucide-react';
 import { useAnalyzeDoc } from '@/utils/ai-model';
 import { Analysis } from '@/types';
@@ -18,7 +18,6 @@ interface FileUploadProps {
 }
 
 const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileUploadProps) => {
-  const { toast } = useToast()
   const [file, setFile] = useState<File | null>(null);
   const [fileDetails, setFileDetails] = useState<{objective: string, fileString: string}>()
   const [isUploading, setIsUploading] = useState(false);
@@ -50,11 +49,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
         };
         reader.readAsDataURL(selectedFile);
       } else {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload a PDF, CSV, or Excel file with your data.",
-          variant: "destructive"
-        });
+        toast.error("Invalid file type")
       }
     }
   };
@@ -67,10 +62,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
     setStreamedText('');
     setIsUploading(true);
     setIsUploading(false);
-    toast({
-      title: "File uploaded successfully",
-      description: "Beginning analysis of your data...",
-    });
+    toast.success("Beginning analysis of your data...")
     setIsAnalyzing(true);
     try {
       await useAnalyzeDoc(
@@ -92,7 +84,7 @@ const FileUpload = ({ onAnalysisComplete, setStreamedText, streamedText }: FileU
         }
       );
     } catch (err) {
-      console.error(err);
+      toast.error("An error occured try again later")
       setIsAnalyzing(false);
     }
   };

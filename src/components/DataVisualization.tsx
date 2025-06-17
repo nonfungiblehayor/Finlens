@@ -17,18 +17,33 @@ interface requiredProps {
 const DataVisualization = ({ fileId }: requiredProps) => {
   const [visualizationPrompt, setVisualizationPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [visualizationResult, setVisualizationResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
+  const [error, setError] = useState<string>()
+  const [visualizationResult, setVisualizationResult] = useState<[chartType]>(null)
+  const [singleResult, setSingleResult] = useState<{data: string | chartType, type: 'chart' | 'table' | null}>(null)
   const generateVisualization = async () => {
         mixpanel.track('visualize data', {
           'visualize_data': 'Visualization'
         })
+      setSingleResult(undefined)
+      setVisualizationResult(null)
+      setError(null)
     if (!visualizationPrompt.trim()) return;
     setIsGenerating(true)
     useVisualizeData(fileId, visualizationPrompt).then((res) => {
-      setVisualizationResult({data: res, type: res?.type})
-    }).catch((error) => {
-      console.log(error)
-      toast.error("An error occured try again later")
+      if(res && res[0]?.type) {
+        setVisualizationResult(res)
+      } else if(res && res?.type) {
+        setSingleResult({data: res?.data, type: res?.type})
+      } else {
+        setError(res)
+        toast.error("Invalid visualization prompt")
+      }
+    }).catch((err) => {
+      let errMsg = String(err)
+      if (errMsg.startsWith("Error: ")) {
+        errMsg = errMsg.replace(/^Error:\s*/, "");
+      }
+      toast.error(errMsg)
     }).finally(() => {
       setIsGenerating(false)
     })
@@ -81,26 +96,35 @@ const DataVisualization = ({ fileId }: requiredProps) => {
               >
                 {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : (
                   <>
-                    {visualizationResult?.type === 'chart' || !visualizationResult?.type ? 
-                      <ChartBar className="mr-2 h-4 w-4" /> : 
-                      <Table className="mr-2 h-4 w-4" />
-                    }
                     Generate Visualization
                   </>
                 )}
               </Button>
             </div>
           </div>
+          
         {isGenerating ? (
             <div className="flex justify-center self-center items-center w-6/12">
               <PageSkeleton />
             </div>
-          ) : visualizationResult ? (
-            <VisualizationResult 
-              type={visualizationResult?.type} 
-              data={visualizationResult?.data} 
+          ) : visualizationResult && !error && !singleResult ? (
+            visualizationResult?.map((result, index) => (
+              <VisualizationResult 
+              key={index}
+              type={result?.type} 
+              data={result?.data} 
             />
-          ) : null}
+            ))
+          ) : error && !visualizationResult && !singleResult ? (
+              <div className='text-red-400'>
+                {error}
+              </div>
+          ): singleResult && !visualizationResult && !error  ? (
+            <VisualizationResult 
+              type={singleResult?.type} 
+              data={singleResult?.data} 
+            />            
+          ): null}
         </CardContent>
       </Card> 
       )

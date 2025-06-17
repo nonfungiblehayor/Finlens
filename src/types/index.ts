@@ -41,7 +41,7 @@ export interface summaryType {
 export interface chartType {
   chart_type: string,
   title: string,
-  type: string,
+  type: 'chart' | 'table',
   data: {
     barData: any[],
     labels: string[]
