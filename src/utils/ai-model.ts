@@ -19,7 +19,7 @@ export const useAnalyzeDoc = async(
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    const reader = response.body.getReader();
+  const reader = response.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
   let fullText = "";
@@ -56,7 +56,9 @@ export const useAskData = async(file_id: string, question: string) => {
       body: JSON.stringify({ fileId: file_id, question: question })
     })
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const raw = await response.text()
+      const error = JSON.parse(raw)
+      throw new Error(error?.error);
     }   
     if(response) {
       const raw = await response.text()
@@ -64,8 +66,7 @@ export const useAskData = async(file_id: string, question: string) => {
       return data?.answer?.parts[0]?.text
     }
   } catch (error) {
-    console.error(error)
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 export const useVisualizeData = async(file_id: string, prompt: string) => {
@@ -78,17 +79,22 @@ export const useVisualizeData = async(file_id: string, prompt: string) => {
       body: JSON.stringify({ fileId: file_id, prompt: prompt })
     })
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const raw = await response.text()
+      const error = JSON.parse(raw)
+      throw new Error(error?.error);
     }   
     if(response) {
       const raw = await response.text()
-      const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
-      const data = JSON.parse(cleaned)
-      return data
+      try {
+        const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
+        const data = JSON.parse(cleaned)
+        return data
+      } catch (error) {
+        return raw
+      }
     }
   } catch (error) {
-    console.error(error)
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 export const useAgent = async(file_id: string, objectives: string) => {
@@ -99,12 +105,19 @@ export const useAgent = async(file_id: string, objectives: string) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ role: "user", messages: `${file_id} ${objectives}` })
+      body: JSON.stringify(
+        {
+        role: "user", 
+        messages: `${file_id} ${objectives}`,
+       }
+      )
     })
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const raw = await response.text()
+      const error = JSON.parse(raw)
+      throw new Error(error?.error);
     }   
-    if(response) {
+    if(response.ok) {
       const raw = await response.text()
       const cleaned = raw.replace(/(^```json\s*|\s*```$)/g, '')
       const dataResult = JSON.parse(cleaned)
@@ -113,8 +126,7 @@ export const useAgent = async(file_id: string, objectives: string) => {
       return data
     }
   } catch (error) {
-    console.error(error)
-    throw new Error(error)
+    throw new Error(error.message)
   }
 }
 

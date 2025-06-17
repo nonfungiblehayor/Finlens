@@ -14,6 +14,7 @@ import { callAfterCopy } from '@/utils/afterCopy';
 import { Textarea } from './ui/textarea';
 import { components } from './VisualizationResult';
 import mixpanel from 'mixpanel-browser';
+import toast from 'react-hot-toast';
 interface AIAgentProps {
   fileId: string;
 }
@@ -36,6 +37,9 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
     callAfterCopy(() => {
       setCopy(undefined)
     }, )
+  const clearResponse = () => {
+    setSummary(undefined)
+  }
   const handleStartAgent = async() => {
       mixpanel.track('run agent', {
         'run_agent': 'agent operation'
@@ -45,7 +49,11 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
     await useAgent(fileId, objective).then((response) => {
       setSummary(response)
     }).catch((err) => {
-      console.log(err)
+      let errMsg = String(err)
+      if (errMsg.startsWith("Error: ")) {
+        errMsg = errMsg.replace(/^Error:\s*/, "");
+      }
+      toast.error(errMsg)
     }).finally(() => {
       setLoading(false)
     })
@@ -59,7 +67,7 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
                  Finlens Data analysis Agent
               </CardTitle>
               <div className='flex items-center gap-x-2'>
-                  <Button onClick={handleStartAgent} disabled={!summary || isLoading}>
+                  <Button onClick={clearResponse} disabled={!summary || isLoading}>
                     <RefreshCw />
                   </Button>
                   <Button onClick={handleCopy} disabled={isCopy || !summary || isLoading}>
@@ -131,7 +139,7 @@ const AIAgent = ({ fileId }: AIAgentProps) => {
                       />
                     ))}
                     {objective?.visualization.map((data, index) => (
-                       <AgentVisualization key={index} title={data?.title} chart_type={data?.chart_type} data={data?.data} type={data?.type} />
+                       <AgentVisualization key={index} title={data?.data?.title} chart_type={data?.data?.chart_type} data={data?.data?.data} type={data?.type} />
                     ))}
                   </div>
                 ))}
