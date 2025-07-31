@@ -35,12 +35,12 @@ const Index = () => {
         description: "Create charts, tables, and visual representations",
         mode: 'visualization' as const
       },
-      {
-        icon: <Bot className="h-4 w-4" />,
-        title: "AI Agent",
-        description: "Autonomously performs data analysis, generates visualizations, and answers queries about your data",
-        mode: 'agent' as const
-      }
+      // {
+      //   icon: <Bot className="h-4 w-4" />,
+      //   title: "AI Agent",
+      //   description: "Autonomously performs data analysis, generates visualizations, and answers queries about your data",
+      //   mode: 'agent' as const
+      // }
     ];
   const uploadNewFile = () => {
     setAnalysis(undefined)
@@ -119,11 +119,11 @@ const Index = () => {
                   <DataVisualization fileId={analysis?.fileId} />
                 )
               }
-              {
+              {/* {
                 activeMode === "agent" && (
                   <AIAgent fileId={analysis?.fileId} />
                 )
-              }
+              } */}
             </>
         </div>
       )}
